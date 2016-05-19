@@ -1,0 +1,325 @@
+:focus{
+  outline:0;
+}
+
+#spinner{
+    position:fixed;
+    left:0;
+    right:0;
+    width:60px;
+    margin:auto;
+    border:0px;
+    top:300px;
+    display:none;
+    z-index:2;
+}
+
+/* Main level box: Setup*/
+#nav {
+  height:26px;
+  width: auto;
+  margin: 30px 10px 0px 10px; /*top right bottom left*/
+  padding: 1px 1px 1px 1px;
+  background-color:#002f87;
+}
+
+/* Second level box: Setup*/
+#nav ul {
+  display: none;
+  padding: 0;
+  width: 240px;
+  position: absolute;
+  top: 26px;
+}
+
+/* Third and greater level box: Setup*/
+#nav ul ul {
+  left: 186px;
+  top: 0px;
+}
+
+/* Main level box: Box within the blue box to house text*/
+#nav li {
+  float: left;
+  position: relative; /*position of the drop down box*/
+  list-style: none;  /*text style in the drop down box*/
+}
+
+/* Main level box: Text within the box*/
+#nav a {
+  font:14px 'Lucida Sans';
+  color: #FFFFFF;
+  display: block;
+  padding: 5px 25px;
+}
+
+/* Main level box: Action on the box when hovering over text*/
+#nav a:hover {
+  background: #009bde;
+  color: #ffffff;
+}
+
+/* Second level box: Inside format*/
+#nav li:hover > ul {
+  display: block;
+  background: #009bde;
+  color: #ffffff;
+  z-index:999;
+}
+
+/* Third level box: text property*/
+#nav ul li {
+  float: none;
+}
+
+/* Second level box and third level box: text property when hovering over text*/
+#nav ul a:hover {
+  background: #002f87 !important;
+  color: #ffffff !important;
+}
+
+/*************************************** REVIEW BELOW WITH NISHANT ******************************************/
+/* clearfix*/
+#nav:after {
+  content: ".";
+  display: block;
+  clear: both;
+  visibility: hidden;
+  line-height: 0;
+  height: 0;
+}
+
+#nav {
+  display: inline-block;
+}
+html #nav {
+  display: block;
+}
+
+* html #nav {
+  height: 1%;
+}
+
+/*nav ul ul {
+  display: none;
+}
+
+nav ul li:hover > ul {
+  display: block;
+}
+
+nav ul {*/
+  /*background: #F0F0F0; */
+  /*list-style: none;
+  position: relative;
+  display: inline-table;
+}
+
+nav ul:after {
+  content: ""; clear: both; display: inline;
+}
+
+nav ul li {
+  float: left;
+}*/
+
+/*nav ul li a img{
+  display:inline;
+  float:left;
+}*/
+
+/*  display:inline;
+  float:left;
+  padding:0px 5px 0px 20px;*/
+  /*background-color:#F0F0F0;*/
+  /*color:#F0F0F0;
+  font:15px "Lucida Sans";
+  font-weight:bold;
+}
+
+nav ul li a:after{
+  margin-left:15px;
+  content:"|"
+}
+
+nav ul ul {*/
+  /*background: #F0F0F0;*/
+  /*padding:0;
+  width:200px;
+  position: absolute;
+  top:100%;
+  z-index:999;
+}
+nav ul ul li {
+  position: relative;
+  background: #A0A0A0;
+  width:200px;
+}
+nav ul ul li a {
+  padding:5px 0px 5px 20px;
+  color: #F0F0F0;
+  font-weight:300;
+}
+
+nav ul ul li:hover a{
+  background: #F0F0F0;color:#A0A0A0;width:180px;*/
+  /*background:#F0F0F0;color:##6D7B8D;*/
+/*}
+
+nav ul ul li a:after {
+  content:"";
+}*/
+
+/*************************************** REVIEW ABOVE WITH NISHANT ******************************************/
+
+#home_nav {
+  height:22px;
+  background-color:#002f87;
+  margin:22px 19px 0px 5px; /*top right bottom left... margin-top:16px; -> margin-top:32px;*/
+  width:auto%;
+  overflow:hidden;
+  clear:both;
+}
+
+#home_nav ul {
+  list-style:none;
+  margin-left:0px;
+  margin-right:auto;
+  margin-top:0px;
+  width:93%;
+  padding:0px;
+}
+
+#home_nav ul li a img{
+  display:inline;
+  float:left;
+  padding:0px 25px 0px 0px;
+  color:#6D7B8D;*/
+}
+
+#home_nav ul li a font{
+  display:inline;
+  float:left;
+  padding:4px 20px 5px 20px;
+  background-color:#002f87;
+  border:solid #ffffff;
+  border-width:0px 1px 0px 0px;
+  color:#ffffff;
+  font:13px "Lucida Sans";
+}
+
+#home_nav ul li.selected a font{
+  display:inline;
+  float:left;
+  margin-left: -4px;
+  padding: 4px 20px 5px 20px;
+  background-color:#009bde;
+  border:solid #ffffff;
+  border-width:0px 1px 0px 0px;
+  color:#ffffff;
+  font:13px "Lucida Sans";
+}
+
+#create_init_form{
+  margin-top:50px;
+  margin-left:100px;
+  margin-right:auto;
+}
+
+#create_init_form_txtarea{
+  margin-top:30px;
+}
+
+#next_button{
+  margin-top:100px;
+  float:right;
+}
+
+#chars_remaining_name{
+  color:#00000;
+  font-size:small;
+}
+
+#chars_remaining_desc{
+  color:#000000;
+  font-size:small;
+}
+
+label{
+  display:block;
+  float:left;
+}
+
+a{
+  text-decoration:none;
+}
+
+.bloc{
+  display:inline-block;
+  vertical-align:top;
+  overflow:hidden;
+}
+
+.bloc select{
+    padding-left:10px;
+  padding-right:120px;
+  margin-right:-16px;
+}
+
+select {
+  color:#808080;
+  font:15px "Lucida Sans";
+}
+
+.bubble {
+  position: absolute;
+  display:none;
+  right:0px;
+  margin:20px 20px 0px 0px;
+  width: 290px;
+  height: 450;
+  padding: 0px;
+  background: #FFFFFF;
+  border: #000000 solid 1px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+}
+
+.bubble:after {
+  content: "";
+  position: absolute;
+  top: -20px;
+  left: 124px;
+  border-style: solid;
+  border-width: 0 8px 20px;
+  border-color: #FFFFFF transparent;
+  display: block;
+  width: 0;
+  z-index: 1;
+}
+
+.bubble:before {
+  content: "";
+  position: absolute;
+  top: -20px;
+  left: 124px;
+  border-style: solid;
+  border-width: 0 8px 20px;
+  border-color: #000000 transparent;
+  display: block;
+  width: 0;
+  z-index: 0;
+}
+
+#select_forecasts_table{
+  border-style:solid;
+  border-color:#F1F1F1;
+  border-right-width:3px;
+  border-left-width:0px;
+  border-bottom-width:3px;
+  border-top-width:0px;
+  width:100%;
+}
+
+#ui-datepicker-div { font-size: 10px; }

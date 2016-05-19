@@ -1,0 +1,63 @@
+{% include kwargs.html_n11_loss_triangle_common_html %}
+{% include kwargs.html_n11_loss_triangle_top_box_html %}
+{% include kwargs.html_n11_loss_triangle_filters_dialog_box_html %}
+{% include kwargs.html_n11_loss_triangle_hidden_inputs_spinner_html %}
+{% load staticfiles %}
+<head>
+    <script type="text/javascript" src="{% static kwargs.jscript_n01_common_history_js %}"></script>
+    <script language="javascript" type="text/javascript" src="{% static kwargs.charts_n11_loss_triangle_loss_triangle_chart_js %}"></script>
+    <script language="javascript" type="text/javascript" src="{% static kwargs.jscript_n11_loss_triangle_loss_triangle_report_js %}"></script>
+    <style>.ui-dialog-titlebar { display:none; }</style>
+    <style>#ui-datepicker-div {z-index:1003 !important;}</style>
+    <script>
+        var kwargs_start_date_global = '{{kwargs.start_date}}';
+        var kwargs_current_date_global = '{{kwargs.current_date}}';
+        var first_uds_date = '{{kwargs.first_uds_date}}';
+        var current_date_day_global = '{{kwargs.current_date_day}}';
+        var max_num_vintages = {{kwargs.max_vintages}};
+        var ajax_url = '{{kwargs.ajax_url}}';
+        var vintage_charts_list = [];
+        var multipleaxes_charts_list = [];
+        function addVintageDatepickers(id,prev_start_date,prev_end_date,first_date,current_date_day,max_vintages){
+            if(id == 1){
+                $('#vintages_datepickers_list').append('<div id="vintages_datepickers_'+id.toString()+'" style="float:left;clear:left;"><div style="float:left;width:200px;"><input type="text" onkeydown="return false;" id="vintage_start_datepicker'+id.toString()+'" value="'+prev_start_date+'" style="font:14px \'Lucida Sans\';padding:5px;border:1px solid #dedede;text-align:center;"></div><div style="float:left;"><input type="text" onkeydown="return false;" id="vintage_end_datepicker'+id.toString()+'" value="'+prev_end_date+'" style="font:14px \'Lucida Sans\';padding:5px;border:1px solid #dedede;text-align:center;"></div><a id="del_dtp_red_'+id.toString()+'" style="display:none;" href="javascript:clearVintageDatepicker('+id.toString()+','+first_date+','+current_date_day+','+max_vintages+');" title="Remove Selection"><img src="{% static kwargs.image_n01_common_del_red_png %}" style="border:0px;margin:7px 10px 0 5px;"></a><img id="del_dtp_gray_'+id.toString()+'" src="{% static kwargs.image_n01_common_del_gray_png %}" style="border:0px;margin:7px 10px 0 5px;display:none;"></div>');
+            }
+            else{
+                $('#vintages_datepickers_list').append('<div id="vintages_datepickers_'+id.toString()+'" style="float:left;clear:left;margin-top:5px;"><div style="float:left;width:200px;"><input type="text" onkeydown="return false;" id="vintage_start_datepicker'+id.toString()+'" value="'+prev_start_date+'" style="font:14px \'Lucida Sans\';padding:5px;border:1px solid #dedede;text-align:center;"></div><div style="float:left;"><input type="text" onkeydown="return false;" id="vintage_end_datepicker'+id.toString()+'" value="'+prev_end_date+'" style="font:14px \'Lucida Sans\';padding:5px;border:1px solid #dedede;text-align:center;"></div><a id="del_dtp_red_'+id.toString()+'" href="javascript:clearVintageDatepicker('+id.toString()+','+first_date+','+current_date_day+','+max_vintages+');" title="Remove Selection"><img src="{% static kwargs.image_n01_common_del_red_png %}" style="border:0px;margin:5px 10px 0 5px;"></a><img id="del_dtp_gray_'+id.toString()+'" src="{% static kwargs.image_n01_common_del_gray_png %}" style="border:0px;margin:3px 10px 0 5px;display:none;"></div>');
+            }
+            createVintageDatepickers(id,prev_start_date,prev_end_date,first_date,current_date_day,max_vintages);
+        }
+    </script>
+</head>
+
+<body onload="shared_link_display('{{kwargs.shared_filters}}','{{kwargs.current_date}}','{{kwargs.start_date}}');">
+    <!--Main charts container-->
+    <div id="no_data_message" style="position:absolute;right:0;left:0;margin:auto;width:300px;font:14px 'Lucida Sans';color:#FF0000;margin-top:160px;display:none;">No Data for Current Selection</div>
+    <div id="main_container" style="clear:left;position:absolute;width:99%;margin-top:100px;z-index:-2;">
+        {% if kwargs.title == 'Loss Triangle' %}
+        <div id="container1" style="right:0;left:0;margin:auto;width:60%; height:430px;"></div>
+        <div style="float:left;width:100%">
+            <div id="container2" style="float:left;width:50%; height:520px;"></div>
+            <div id="container3" style="float:left;width:50%; height:520px;"></div>
+        </div>
+        <div style="float:left;width:100%">
+            <div id="container4" style="float:left;width:50%; height:520px;"></div>
+            <div id="container5" style="float:left;width:50%; height:520px;"></div>
+        </div>
+        <div id="container6" style="right:0;left:0;margin:auto;width:60%; height:430px;margin-top:1040px;"></div>
+        <div style="float:left;width:100%;">
+            <div id="container7" style="float:left;width:50%; height:520px;"></div>
+            <div id="container8" style="float:left;width:50%; height:520px;"></div>
+        </div>
+        <div style="float:left;width:100%;margin-top:90px;"></div>
+        {% elif kwargs.title == 'Loss Triangle Alternate View' %}
+        <div id="container1" style="right:0;left:0;margin:auto;width:70%; height:540px;"></div>
+        <div id="container2" style="right:0;left:0;margin:auto;width:70%; height:540px;"></div>
+        <div id="container3" style="right:0;left:0;margin:auto;width:70%; height:540px;"></div>
+        <div id="container4" style="right:0;left:0;margin:auto;width:70%; height:540px;"></div>
+        <div id="container5" style="right:0;left:0;margin:auto;width:70%; height:540px;"></div>
+        <div id="container6" style="right:0;left:0;margin:auto;width:70%; height:540px;"></div>
+        <div style="float:left;width:100%;margin-top:90px;"></div>
+        {% endif %}
+    </div>
+</body>

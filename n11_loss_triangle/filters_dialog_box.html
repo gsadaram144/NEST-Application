@@ -1,0 +1,150 @@
+
+{% load staticfiles %}
+<head>
+    <style>.font-12px {font: 12px 'Lucida Sans'}</style>
+</head>
+<!--Code for AJAX APPLY FILTERS dialog box-->
+<div id="filters_dialog" style="z-index:1;display:none;">
+    <div style="float:left;margin:0 0 0 0;" id="filters_dialog_main">
+        <div style="float:left;margin:0 0 0 0;padding:0 20px 0 0;border-right:5px solid #A3A3A3;" id="filter_names">
+          <!--Set properties for all filters in the apply filter menu-->
+          {% for name,values in kwargs.report_filters %}
+            <div class='font-12px' style="padding:5px 0 5px 0;color:#000000;width:150px;margin:5px 0 5px 0;">
+              <a href="javascript:showFilterValues('{{name}}');">
+                <div id="omo_afDB_{{name}}"
+                   onmouseover="javascript:onmouse_ApplyFilterDialogBox('omo_afDB_{{name}}','#0000FF','Bold');"
+                   onmouseout="javascript:onmouse_ApplyFilterDialogBox('omo_afDB_{{name}}','#000000','Normal');"
+                   style="width:150px;">{{name}}
+                </div>
+                <!--To be shown on click-->
+                <div id="{{name}}_placeholder"
+                   style="width:170px;
+                      font: bold;
+                      color:#FFFFFF;
+                      background-color: #002f87;
+                      padding: 5px 0 5px 0;
+                      display:none;">{{name}}
+                </div>
+              </a>
+            </div>
+          {% endfor %}
+          <div><br><br><br><br><br><br><br><br><br><br></div>
+        </div>
+        <div style="float:left;margin:0 0 10px 20px;height:300px;display:none;" id="place_holder"></div>
+        <div style="float:left;margin:20px 0 10px 10px;display:none;"
+			   id="Vintage_values">
+            {% if kwargs.title == 'Loss Triangle' %}
+            <!--<div class="font-12px" style="margin:0 0 0 7px;">
+                <b>Select number of Bad Weeks</b> <select id="badweeks_dropdown" onchange='$("#block_apply").hide()'>
+                    {% for i in kwargs.vintage_selection_list %}
+                        {% if i == 13 %}
+                        <option selected>{{i}}</option>
+                        {% else %}
+                        <option>{{i}}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </div>-->
+            {% endif %}
+            <div id="vintages_datepickers_list" style="float:left;">
+                <div style="float:left">
+                    <div class='font-12px' style="float:left;width:200px;padding:20px 5px 5px 7px;"><b>From week-ending date</b></div>
+                    <div class='font-12px' style="float:left;padding:20px 5px 5px 0;"><b>To week-ending date</b></div>
+                </div>
+            </div>
+            {% if kwargs.title == 'Loss Triangle' %}
+            <a id="add_vintages_text_a" href="javascript:addVintagesTextClick('{{kwargs.first_uds_date}}','{{kwargs.current_date_day}}',{{kwargs.max_vintages}});" style="position:absolute;"><div id="add_vintages_text" class="font-12px" style="margin:45px 0 0 10px;color:#002F87;width:140px;text-decoration:underline;">Add a New Date Range</div></a>
+            {% endif %}
+        </div>
+        {% for name,values in kwargs.report_filters %}
+            {% if name != 'Flows' and name != 'Vintage' %}
+            <div style="float:left;margin:10px 0 10px 10px;display:none;"
+               id="{{name}}_values">
+            {% for value in values %}
+                {% if value == "ACH" or value == "ATO" or value == "CC" %}
+                    <div class='font-12px' style="padding:1px 0 1px 0;color:#000000;width:140px;margin:5px 0 5px 0;">
+                      <input type="checkbox" id="{{name}}_{{value}}"
+                           onchange="javascript:editCheckboxes('{{name}}_{{value}}');"/>{{value}}
+                    </div>
+                    {% for st_name,st_values in kwargs.brm_subtype_filters %}
+                        {% if st_name == value %}
+                            {% for st_value in st_values %}
+                                <div class='font-12px' style="padding:1px 0 1px 0;color:#000000;margin:5px 0 5px 15px;">
+                                  <input type="checkbox" id="{{value}}_{{st_value}}"
+                                       onchange="javascript:editCheckboxes('{{value}}_{{st_value}}');"/>{{st_value}}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                    <div id="{{name}}_{{value}}_div" class='font-12px' style="padding:1px 0 1px 0;color:#000000;margin:5px 0 5px 0;">
+                      <input type="checkbox" id="{{name}}_{{value}}"
+                           onchange="javascript:editCheckboxes('{{name}}_{{value}}');"/>{{value}}
+                    </div>
+                {% endif %}
+            {% endfor %}
+            </div>
+            {% endif %}
+        {% endfor %}
+        <div style="float:left;margin:20px 0 10px 10px;display:none;" id="Flows_values">
+            <table style="margin:10px 19px 0px 20px; width:auto;">
+                {% for name,values in kwargs.flow_filters %}
+                    {% if forloop.counter0 == 0 %}
+                    <tr>
+                        <td class='font-12px' style="width:110px;padding:10px;">{{name}}</td>
+                        {% for value in values %}
+                            <td class='font-12px' style="padding:10px;">
+                            <input type="radio" id="{{name}}_{{value}}" name="{{name}}" onclick="$('#block_apply').hide();" value="{{value}}">{{value}}</td>
+                        {% endfor %}
+                        <td></td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td class='font-12px' style="width:110px;padding:10px;border-top:1px solid #858585;">{{name}}</td>
+                        {% for value in values %}
+                            <td class='font-12px' style="padding:10px;border-top:1px solid #858585;">
+                            <input type="radio" id="{{name}}_{{value}}" name="{{name}}" onclick="$('#block_apply').hide();" value="{{value}}">{{value}}</td>
+                        {% endfor %}
+                        <td></td>
+                    </tr>
+                    {% endif %}
+                {% endfor %}
+                <tr id="Txn Class_values">
+                    <td class='font-12px' style="width:110px;padding:30px 10px 10px 10px;border-top:1px solid #858585;">Txn Class</td>
+                    {% for value in kwargs.txn_class_values %}
+                        {% if value == 'All' %}
+                        <td id="Txn Class_All_div" class='font-12px' style="opacity:0.5;padding:30px 10px 10px 10px;border-top:1px solid #858585;">
+                        {% else %}
+                        <td class='font-12px' style="padding:30px 10px 10px 10px;border-top:1px solid #858585;">
+                        {% endif %}
+                    	<input type="checkbox" id="Txn Class_{{value}}" onchange="javascript:editCheckboxes('Txn Class_{{value}}');">{{value}}</td>
+                    {% endfor %}
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div style="clear:left;">
+        <div style= "float:right;
+               margin:20px 0 0 8px;">
+          <a href="javascript:applyFilters('{{kwargs.current_date}}','{{kwargs.start_date}}');"
+             style="font:14px 'Lucida Sans';
+                  color:#ffffff;
+                  background-color:#002f87;
+                  padding:6px;">&nbsp;Apply&nbsp;
+          </a>
+        </div>
+        <div id="block_apply"
+             style="float:right;
+                    margin:13px -68px 0 8px;
+                    background:transparent;
+                    height:27px;
+                    width:58px;"></div>
+        <div style= "float:right;
+               margin:25px 0 0 20px;">
+          <a class='font-12px' href="javascript:closeDialog();"
+             style="color:#858585;
+                  padding:13px 0 0 0;">&nbsp;Cancel&nbsp;
+          </a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,3160 @@
+{% load staticfiles %}
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <!--[if lt IE 9]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" type="text/css" href="{% static kwargs.css_n01_common_leapfrog_main_css %}" />
+    <script language="javascript" type="text/javascript" src="{% static kwargs.jscript_n01_common_leapfrog_utils_js %}"></script>
+    {% if kwargs.title %}
+    <title>{{ kwargs.title }}</title>
+    {% endif %}
+    <link rel="shortcut icon" href="{% static kwargs.image_n01_common_favicon_png %}" />
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
+    <script src="http://code.jquery.com/jquery-1.10.1.js"></script>
+    <script src="http://code.highcharts.com/highcharts.js"></script>
+    <script src="http://code.highcharts.com/modules/exporting.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
+<script>
+$(function() {
+
+    chart01_options = {
+            chart: {
+                marginRight: 30,
+                marginTop: 75,
+                marginBottom: 110,
+                animation: {
+                    duration: 1000
+                }
+            },
+            title: {
+                text: '$ Attempts (millions)',
+                style: {
+                    color: '#002f87',
+                    font: '15px Lucida Sans',
+                },
+                y: 40,
+            },
+            credits: {
+                enabled:false
+            },
+            xAxis: {
+                categories: {{kwargs.chart01_x|safe}}['data'],
+                title: {
+                    text: 'Date --->',
+                    style: {
+                        color: '#000000',
+                        font: '12px Lucida Sans',
+                        /*color: Highcharts.getOptions().colors[1]*/
+                    }
+                },
+                labels: {
+                    rotation: -90,
+                    align: 'right',
+                    style: {
+                        color: '#000000',
+                        ffont: '12px Lucida Sans',
+                    }
+                }
+            },
+            tooltip: {
+                    // followTouchMove: true,
+                    // followPointer: true,
+                    positioner: function () {
+                    return { x: 20, y: 0 };
+                    },
+                    backgroundColor: '#FFFFFF',
+                    style: {
+                    fontSize: '10px',
+                    padding: '8px'
+                    },
+
+                    formatter: function() {
+                    var s = 'Date: <b>'+ this.x +'</b> <br/>'
+                   // s += 'Name of series: <b>' + this.series.name + '</b> <br/>'
+                    s += 'Attempts: <b> $' + Highcharts.numberFormat(this.y,0) + '</b>'
+
+                    return s;
+                          },
+
+                      },
+            yAxis: { // Primary yAxis
+                labels: {
+                    enabled:true,
+                    formatter: function(){
+                        return Highcharts.numberFormat((Math.abs(this.value) / 1000000),0);
+                    },
+                    style: {
+                        color: '#000000',
+                        font: '12px Lucida Sans',
+                        /*color: Highcharts.getOptions().colors[4]*/
+                    }
+                },
+                title: {
+                    text: '$ Attempts --->',
+                    style: {
+                        color: '#000000',
+                        font: '12px Lucida Sans',
+                        /*color: Highcharts.getOptions().colors[4]*/
+                    }
+                },
+                gridLineColor: '#A0A0A0',
+                gridLineDashStyle: 'dash',
+                gridLineWidth: 0.5
+            },
+            legend: {
+                layout: 'horizontal',
+                align: 'left',
+                x: 70,
+                verticalAlign: 'bottom',
+                y: 10,
+                floating: true,
+                itemStyle: {
+                    color: '#000000',
+                    font: '10px Lucida Sans',
+                },
+                backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor)
+            },
+            series: [{
+                        name: "Current Week",
+                        dataLabels: {
+                                        //enabled: true,
+                                        color: '#c80505',
+                                        formatter: function(){
+                                            return ((this.y/1000000).toFixed(2));
+                                        },
+                                        rotation:270,
+                                        x: 4,
+                                        y: 32,
+                                    },
+                        color: '#c80505',
+                        type: "line",
+                        lineWidth: 2,
+                        marker: {
+                          symbol: 'circle',
+                          lineColor: null,
+                          radius: 3,
+                          lineWidth: 1
+                        },
+                        data: {{ kwargs.chart01_data|safe }}[0]['data'],
+
+                    },{
+                        name: "Prior Week",
+                        dataLabels: {
+                                        //enabled: true,
+                                        color: "#053246",
+                                        formatter: function(){
+                                            return ((this.y/1000000).toFixed(2));
+                                        },
+                                        rotation:270,
+                                        x: 4,
+                                        y:-30,
+                                    },
+                        color: '#053246',
+                        type: "line",
+                        lineWidth: 2,
+                        marker: {
+                          symbol: 'circle',
+                          lineColor: null,
+                          radius: 3,
+                          lineWidth: 1
+                        },
+
+                        data: {{ kwargs.chart01_data|safe }}[1]['data'],
+                    },{
+                        name: "Prior Month",
+                        dataLabels: {
+                                        //enabled: true,
+                                        color: "#0080FF",
+                                        formatter: function(){
+                                            return ((this.y/1000000).toFixed(2));
+                                        },
+                                        rotation:270,
+                                        x: 4,
+                                        y:-30,
+                                    },
+                        color: '#0080FF',
+                        type: "line",
+                        lineWidth: 2,
+                        marker: {
+                          symbol: 'circle',
+                          lineColor: null,
+                          radius: 3,
+                          lineWidth: 1
+                        },
+
+                        data: {{ kwargs.chart01_data|safe }}[2]['data'],
+                    }],
+            //series: {{ kwargs.chart01_data|safe }},
+    };
+
+    chart02_options = {
+            chart: {
+                marginRight: 30,
+                marginTop: 75,
+                marginBottom: 110,
+                animation: {
+                    duration: 1000
+                }
+            },
+            title: {
+                text: '# Attempts (units, millions)',
+                style: {
+                    color: '#002f87',
+                    font: '15px Lucida Sans',
+                },
+                y: 40,
+            },
+            credits: {
+                enabled:false
+            },
+            xAxis: {
+                categories: {{kwargs.chart02_x|safe}}['data'],
+                title: {
+                    text: 'Date --->',
+                    style: {
+                        color: '#000000',
+                        font: '12px Lucida Sans',
+                        /*color: Highcharts.getOptions().colors[1]*/
+                    }
+                },
+                labels: {
+                    rotation: -90,
+                    align: 'right',
+                    style: {
+                        color: '#000000',
+                        font: '12px Lucida Sans',
+                    }
+                }
+            },
+            tooltip: {
+                    // followTouchMove: true,
+                    // followPointer: true,
+                    positioner: function () {
+                    return { x: 20, y: 0 };
+                    },
+                    backgroundColor: '#FFFFFF',
+                    style: {
+                    fontSize: '10px',
+                    padding: '8px'
+                    },
+
+                    formatter: function() {
+                    var s = 'Date: <b>'+ this.x +'</b> <br/>'
+                   // s += 'Name of series: <b>' + this.series.name + '</b> <br/>'
+                    s += 'Attempts: <b> ' + Highcharts.numberFormat(this.y,0) + '</b>'
+
+                    return s;
+                          },
+
+                      },
+            yAxis: { // Primary yAxis
+                labels: {
+                    enabled:true,
+                    formatter: function(){
+                        return Highcharts.numberFormat((Math.abs(this.value) / 1000000),1);
+                    },
+                    style: {
+                        color: '#000000',
+                        font: '12px Lucida Sans',
+                        /*color: Highcharts.getOptions().colors[4]*/
+                    }
+                },
+                title: {
+                    text: '# Attempts --->',
+                    style: {
+                        color: '#000000',
+                        font: '12px Lucida Sans',
+                        /*color: Highcharts.getOptions().colors[4]*/
+                    }
+                },
+                gridLineColor: '#A0A0A0',
+                gridLineDashStyle: 'dash',
+                gridLineWidth: 0.5
+            },
+            legend: {
+                layout: 'horizontal',
+                align: 'left',
+                x: 70,
+                verticalAlign: 'bottom',
+                y: 10,
+                floating: true,
+                itemStyle: {
+                    color: '#000000',
+                    font: '10px Lucida Sans',
+                },
+                backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor)
+            },
+            series: [{
+                        name: "Current Week",
+                        dataLabels: {
+                                        //enabled: true,
+                                        color: '#c80505',
+                                        formatter: function(){
+                                            return ((this.y).toFixed(2));
+                                        },
+                                        rotation:270,
+                                        x: 4,
+                                        y: 32,
+                                    },
+                        color: '#c80505',
+                        type: "line",
+                        lineWidth: 2,
+                        marker: {
+                          symbol: 'circle',
+                          lineColor: null,
+                          radius: 3,
+                          lineWidth: 1
+                        },
+
+                        data: {{ kwargs.chart02_data|safe }}[0]['data'],
+
+                    },{
+                        name: "Prior Week",
+                        dataLabels: {
+                                        //enabled: true,
+                                        color: "#053246",
+                                        formatter: function(){
+                                            return ((this.y).toFixed(2));
+                                        },
+                                        rotation:270,
+                                        x: 4,
+                                        y:-30,
+                                    },
+                        color: '#053246',
+                        type: "line",
+                        lineWidth: 2,
+                        marker: {
+                          symbol: 'circle',
+                          lineColor: null,
+                          radius: 3,
+                          lineWidth: 1
+                        },
+
+                        data: {{ kwargs.chart02_data|safe }}[1]['data'],
+                    },{
+                        name: "Prior Month",
+                        dataLabels: {
+                                        //enabled: true,
+                                        color: "#0080FF",
+                                        formatter: function(){
+                                            return ((this.y).toFixed(2));
+                                        },
+                                        rotation:270,
+                                        x: 4,
+                                        y:-30,
+                                    },
+                        color: '#0080FF',
+                        type: "line",
+                        lineWidth: 2,
+                        marker: {
+                          symbol: 'circle',
+                          lineColor: null,
+                          radius: 3,
+                          lineWidth: 1
+                        },
+
+                        data: {{ kwargs.chart02_data|safe }}[2]['data'],
+                    }],
+            //series: {{ kwargs.chart02_data|safe }},
+    };
+
+    chart03_options = {
+            chart: {
+                marginRight: 30,
+                marginTop: 75,
+                marginBottom: 110,
+                animation: {
+                    duration: 1000
+                }
+            },
+            title: {
+                text: 'NCG: $ Attempts (millions)',
+                style: {
+                    color: '#002f87',
+                    font: '15px Lucida Sans',
+                },
+                y: 40,
+            },
+            credits: {
+                enabled:false
+            },
+            xAxis: {
+                categories: {{kwargs.chart03_x|safe}}['data'],
+                title: {
+                    text: 'Date --->',
+                    style: {
+                        color: '#000000',
+                        font: '12px Lucida Sans',
+                        /*color: Highcharts.getOptions().colors[1]*/
+                    }
+                },
+                labels: {
+                    rotation: -90,
+                    align: 'right',
+                    style: {
+                        color: '#000000',
+                        font: '12px Lucida Sans',
+                    }
+                }
+            },
+            tooltip: {
+                    // followTouchMove: true,
+                    // followPointer: true,
+                    positioner: function () {
+                    return { x: 20, y: 0 };
+                    },
+                    backgroundColor: '#FFFFFF',
+                    style: {
+                    fontSize: '10px',
+                    padding: '8px'
+                    },
+
+                    formatter: function() {
+                    var s = 'Date: <b>'+ this.x +'</b> <br/>'
+                   // s += 'Name of series: <b>' + this.series.name + '</b> <br/>'
+                    s += 'Attempts: <b> $' + Highcharts.numberFormat(this.y,0) + '</b>'
+
+                    return s;
+                          },
+
+                      },
+            yAxis: { // Primary yAxis
+                labels: {
+                    enabled:true,
+                    formatter: function(){
+                        return Highcharts.numberFormat((Math.abs(this.value) / 1000000),0);
+                    },
+                    style: {
+                        color: '#000000',
+                        font: '12px Lucida Sans',
+                        /*color: Highcharts.getOptions().colors[4]*/
+                    }
+                },
+                title: {
+                    text: '$ Attempts --->',
+                    style: {
+                        color: '#000000',
+                        font: '12px Lucida Sans',
+                        /*color: Highcharts.getOptions().colors[4]*/
+                    }
+                },
+                gridLineColor: '#A0A0A0',
+                gridLineDashStyle: 'dash',
+                gridLineWidth: 0.5
+            },
+            legend: {
+                layout: 'horizontal',
+                align: 'left',
+                x: 70,
+                verticalAlign: 'bottom',
+                y: 10,
+                floating: true,
+                itemStyle: {
+                    color: '#000000',
+                    font: '10px Lucida Sans',
+                },
+                backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor)
+            },
+            series: [{
+                        name: "Current Week",
+                        dataLabels: {
+                                        //enabled: true,
+                                        color: '#c80505',
+                                        formatter: function(){
+                                            return ((this.y/1000000).toFixed(2));
+                                        },
+                                        rotation:270,
+                                        x: 4,
+                                        y: 32,
+                                    },
+                        color: '#c80505',
+                        type: "line",
+                        lineWidth: 2,
+                        marker: {
+                          symbol: 'circle',
+                          lineColor: null,
+                          radius: 3,
+                          lineWidth: 1
+                        },
+
+                        data: {{ kwargs.chart03_data|safe }}[0]['data'],
+
+                    },{
+                        name: "Prior Week",
+                        dataLabels: {
+                                        //enabled: true,
+                                        color: "#053246",
+                                        formatter: function(){
+                                            return ((this.y/1000000).toFixed(2));
+                                        },
+                                        rotation:270,
+                                        x: 4,
+                                        y:-30,
+                                    },
+                        color: '#053246',
+                        type: "line",
+                        lineWidth: 2,
+                        marker: {
+                          symbol: 'circle',
+                          lineColor: null,
+                          radius: 3,
+                          lineWidth: 1
+                        },
+
+                        data: {{ kwargs.chart03_data|safe }}[1]['data'],
+                    },{
+                        name: "Prior Month",
+                        dataLabels: {
+                                        //enabled: true,
+                                        color: "#0080FF",
+                                        formatter: function(){
+                                            return ((this.y/1000000).toFixed(2));
+                                        },
+                                        rotation:270,
+                                        x: 4,
+                                        y:-30,
+                                    },
+                        color: '#0080FF',
+                        type: "line",
+                        lineWidth: 2,
+                        marker: {
+                          symbol: 'circle',
+                          lineColor: null,
+                          radius: 3,
+                          lineWidth: 1
+                        },
+
+                        data: {{ kwargs.chart03_data|safe }}[2]['data'],
+                    }],
+            //series: {{ kwargs.chart03_data|safe }},
+    };
+
+    chart04_options = {
+            chart: {
+                marginRight: 30,
+                marginTop: 75,
+                marginBottom: 110,
+                animation: {
+                    duration: 1000
+                }
+            },
+            title: {
+                text: 'NCG: # Attempts (units, millions)',
+                style: {
+                    color: '#002f87',
+                    font: '15px Lucida Sans',
+                },
+                y: 40,
+            },
+            credits: {
+                enabled:false
+            },
+            xAxis: {
+                categories: {{kwargs.chart04_x|safe}}['data'],
+                title: {
+                    text: 'Date --->',
+                    style: {
+                        color: '#000000',
+                        font: '12px Lucida Sans',
+                        /*color: Highcharts.getOptions().colors[1]*/
+                    }
+                },
+                labels: {
+                    rotation: -90,
+                    align: 'right',
+                    style: {
+                        color: '#000000',
+                        font: '12px Lucida Sans',
+                    }
+                }
+            },
+            tooltip: {
+                    // followTouchMove: true,
+                    // followPointer: true,
+                    positioner: function () {
+                    return { x: 20, y: 0 };
+                    },
+                    backgroundColor: '#FFFFFF',
+                    style: {
+                    fontSize: '10px',
+                    padding: '8px'
+                    },
+
+                    formatter: function() {
+                    var s = 'Date: <b>'+ this.x +'</b> <br/>'
+                   // s += 'Name of series: <b>' + this.series.name + '</b> <br/>'
+                    s += 'Attempts: <b> ' + Highcharts.numberFormat(this.y,0) + '</b>'
+
+                    return s;
+                          },
+
+                      },
+            yAxis: { // Primary yAxis
+                labels: {
+                    enabled:true,
+                    formatter: function(){
+                        return Highcharts.numberFormat((Math.abs(this.value) / 1000000),1);
+                    },
+                    style: {
+                        color: '#000000',
+                        font: '12px Lucida Sans',
+                        /*color: Highcharts.getOptions().colors[4]*/
+                    }
+                },
+                title: {
+                    text: '# Attempts --->',
+                    style: {
+                        color: '#000000',
+                        font: '12px Lucida Sans',
+                        /*color: Highcharts.getOptions().colors[4]*/
+                    }
+                },
+                gridLineColor: '#A0A0A0',
+                gridLineDashStyle: 'dash',
+                gridLineWidth: 0.5
+            },
+            legend: {
+                layout: 'horizontal',
+                align: 'left',
+                x: 70,
+                verticalAlign: 'bottom',
+                y: 10,
+                floating: true,
+                itemStyle: {
+                    color: '#000000',
+                    font: '10px Lucida Sans',
+                },
+                backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor)
+            },
+            series: [{
+                        name: "Current Week",
+                        dataLabels: {
+                                        //enabled: true,
+                                        color: '#c80505',
+                                        formatter: function(){
+                                            return ((this.y).toFixed(2));
+                                        },
+                                        rotation:270,
+                                        x: 4,
+                                        y: 32,
+                                    },
+                        color: '#c80505',
+                        type: "line",
+                        lineWidth: 2,
+                        marker: {
+                          symbol: 'circle',
+                          lineColor: null,
+                          radius: 3,
+                          lineWidth: 1
+                        },
+
+                        data: {{ kwargs.chart04_data|safe }}[0]['data'],
+
+                    },{
+                        name: "Prior Week",
+                        dataLabels: {
+                                        //enabled: true,
+                                        color: "#053246",
+                                        formatter: function(){
+                                            return ((this.y).toFixed(2));
+                                        },
+                                        rotation:270,
+                                        x: 4,
+                                        y:-30,
+                                    },
+                        color: '#053246',
+                        type: "line",
+                        lineWidth: 2,
+                        marker: {
+                          symbol: 'circle',
+                          lineColor: null,
+                          radius: 3,
+                          lineWidth: 1
+                        },
+
+                        data: {{ kwargs.chart04_data|safe }}[1]['data'],
+                    },{
+                        name: "Prior Month",
+                        dataLabels: {
+                                        //enabled: true,
+                                        color: "#0080FF",
+                                        formatter: function(){
+                                            return ((this.y).toFixed(2));
+                                        },
+                                        rotation:270,
+                                        x: 4,
+                                        y:-30,
+                                    },
+                        color: '#0080FF',
+                        type: "line",
+                        lineWidth: 2,
+                        marker: {
+                          symbol: 'circle',
+                          lineColor: null,
+                          radius: 3,
+                          lineWidth: 1
+                        },
+
+                        data: {{ kwargs.chart04_data|safe }}[2]['data'],
+                    }],
+            //series: {{ kwargs.chart04_data|safe }},
+    };
+
+    chart05_options = {
+            chart: {
+                marginRight: 30,
+                marginTop: 75,
+                marginBottom: 110,
+                animation: {
+                    duration: 1000
+                }
+            },
+            title: {
+                text: 'NCG: % $ Auth Challenge (amount)',
+                style: {
+                    color: '#002f87',
+                    font: '15px Lucida Sans',
+                },
+                y: 40,
+            },
+            credits: {
+                enabled:false
+            },
+            xAxis: {
+                categories: {{kwargs.chart05_x|safe}}['data'],
+                title: {
+                    text: 'Date --->',
+                    style: {
+                        color: '#000000',
+                        font: '12px Lucida Sans',
+                        /*color: Highcharts.getOptions().colors[1]*/
+                    }
+                },
+                labels: {
+                    rotation: -90,
+                    align: 'right',
+                    style: {
+                        color: '#000000',
+                        font: '12px Lucida Sans',
+                    }
+                }
+            },
+            tooltip: {
+                    // followTouchMove: true,
+                    // followPointer: true,
+                    positioner: function () {
+                    return { x: 20, y: 0 };
+                    },
+                    backgroundColor: '#FFFFFF',
+                    style: {
+                    fontSize: '10px',
+                    padding: '8px'
+                    },
+
+                    formatter: function() {
+                    var s = 'Date: <b>'+ this.x +'</b> <br/>'
+                   // s += 'Name of series: <b>' + this.series.name + '</b> <br/>'
+                    s += 'Rate: <b> ' + Highcharts.numberFormat((this.y * 100).toFixed(2),2) + '%</b>'
+
+                    return s;
+                          },
+
+                      },
+            yAxis: { // Primary yAxis
+                labels: {
+                    enabled:true,
+                    formatter: function(){
+                        return ((this.value * 100).toFixed(2) + '%');
+                    },
+                    style: {
+                        color: '#000000',
+                        font: '12px Lucida Sans',
+                        /*color: Highcharts.getOptions().colors[4]*/
+                    }
+                },
+                title: {
+                    text: '% Rate --->',
+                    style: {
+                        color: '#000000',
+                        font: '12px Lucida Sans',
+                        /*color: Highcharts.getOptions().colors[4]*/
+                    }
+                },
+                gridLineColor: '#A0A0A0',
+                gridLineDashStyle: 'dash',
+                gridLineWidth: 0.5
+            },
+            legend: {
+                layout: 'horizontal',
+                align: 'left',
+                x: 70,
+                verticalAlign: 'bottom',
+                y: 10,
+                floating: true,
+                itemStyle: {
+                    color: '#000000',
+                    font: '10px Lucida Sans',
+                },
+                backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor)
+            },
+            series: [{
+                        name: "Current Week",
+                        dataLabels: {
+                          //enabled: true,
+                          color: '#c80505',
+                          formatter: function(){
+                              return ((this.y * 100).toFixed(2));
+                          },
+                          rotation:270,
+                          x: 4,
+                          y: 32,
+                        },
+                        color: '#c80505',
+                        type: "line",
+                        lineWidth: 2,
+                        marker: {
+                          symbol: 'circle',
+                          lineColor: null,
+                          radius: 3,
+                          lineWidth: 1
+                        },
+
+                        data: {{ kwargs.chart05_data|safe }}[0]['data'],
+
+                    },{
+                        name: "Prior Week",
+                        dataLabels: {
+                          //enabled: true,
+                          color: "#053246",
+                          formatter: function(){
+                              return ((this.y * 100).toFixed(2));
+                          },
+                          rotation:270,
+                          x: 4,
+                          y:-30,
+                        },
+                        color: '#053246',
+                        type: "line",
+                        lineWidth: 2,
+                        marker: {
+                          symbol: 'circle',
+                          lineColor: null,
+                          radius: 3,
+                          lineWidth: 1
+                        },
+
+                        data: {{ kwargs.chart05_data|safe }}[1]['data'],
+                    },{
+                        name: "Prior Month",
+                        dataLabels: {
+                          //enabled: true,
+                          color: "#0080FF",
+                          formatter: function(){
+                              return ((this.y * 100).toFixed(2));
+                          },
+                          rotation:270,
+                          x: 4,
+                          y:-30,
+                        },
+                        color: '#0080FF',
+                        type: "line",
+                        lineWidth: 2,
+                        marker: {
+                          symbol: 'circle',
+                          lineColor: null,
+                          radius: 3,
+                          lineWidth: 1
+                        },
+
+                        data: {{ kwargs.chart05_data|safe }}[2]['data'],
+                    }],
+            //series: {{ kwargs.chart05_data|safe }},
+    };
+
+    chart06_options = {
+            chart: {
+                marginRight: 30,
+                marginTop: 75,
+                marginBottom: 110,
+                animation: {
+                    duration: 1000
+                }
+            },
+            title: {
+                text: 'NCG: % # Auth Challenge (units)',
+                style: {
+                    color: '#002f87',
+                    font: '15px Lucida Sans',
+                },
+                y: 40,
+            },
+            credits: {
+                enabled:false
+            },
+            xAxis: {
+                categories: {{kwargs.chart06_x|safe}}['data'],
+                title: {
+                    text: 'Date --->',
+                    style: {
+                        color: '#000000',
+                        font: '12px Lucida Sans',
+                        /*color: Highcharts.getOptions().colors[1]*/
+                    }
+                },
+                labels: {
+                    rotation: -90,
+                    align: 'right',
+                    style: {
+                        color: '#000000',
+                        font: '12px Lucida Sans',
+                    }
+                }
+            },
+            tooltip: {
+                    // followTouchMove: true,
+                    // followPointer: true,
+                    positioner: function () {
+                    return { x: 20, y: 0 };
+                    },
+                    backgroundColor: '#FFFFFF',
+                    style: {
+                    fontSize: '10px',
+                    padding: '8px'
+                    },
+
+                    formatter: function() {
+                    var s = 'Date: <b>'+ this.x +'</b> <br/>'
+                   // s += 'Name of series: <b>' + this.series.name + '</b> <br/>'
+                    s += 'Rate: <b> ' + Highcharts.numberFormat((this.y * 100).toFixed(2),2) + '%</b>'
+
+                    return s;
+                          },
+
+                      },
+            yAxis: { // Primary yAxis
+                labels: {
+                    enabled:true,
+                    formatter: function(){
+                        return ((this.value * 100).toFixed(2) + '%');
+                    },
+                    style: {
+                        color: '#000000',
+                        font: '12px Lucida Sans',
+                        /*color: Highcharts.getOptions().colors[4]*/
+                    }
+                },
+                title: {
+                    text: '% Rate --->',
+                    style: {
+                        color: '#000000',
+                        font: '12px Lucida Sans',
+                        /*color: Highcharts.getOptions().colors[4]*/
+                    }
+                },
+                gridLineColor: '#A0A0A0',
+                gridLineDashStyle: 'dash',
+                gridLineWidth: 0.5
+            },
+            legend: {
+                layout: 'horizontal',
+                align: 'left',
+                x: 70,
+                verticalAlign: 'bottom',
+                y: 10,
+                floating: true,
+                itemStyle: {
+                    color: '#000000',
+                    font: '10px Lucida Sans',
+                },
+                backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor)
+            },
+            series: [{
+                        name: "Current Week",
+                        dataLabels: {
+                                        //enabled: true,
+                                        color: '#c80505',
+                                        formatter: function(){
+                                            return ((this.y).toFixed(2));
+                                        },
+                                        rotation:270,
+                                        x: 4,
+                                        y: 32,
+                                    },
+                        color: '#c80505',
+                        type: "line",
+                        lineWidth: 2,
+                        marker: {
+                          symbol: 'circle',
+                          lineColor: null,
+                          radius: 3,
+                          lineWidth: 1
+                        },
+
+                        data: {{ kwargs.chart06_data|safe }}[0]['data'],
+
+                    },{
+                        name: "Prior Week",
+                        dataLabels: {
+                                        //enabled: true,
+                                        color: "#053246",
+                                        formatter: function(){
+                                            return ((this.y).toFixed(2));
+                                        },
+                                        rotation:270,
+                                        x: 4,
+                                        y:-30,
+                                    },
+                        color: '#053246',
+                        type: "line",
+                        lineWidth: 2,
+                        marker: {
+                          symbol: 'circle',
+                          lineColor: null,
+                          radius: 3,
+                          lineWidth: 1
+                        },
+
+                        data: {{ kwargs.chart06_data|safe }}[1]['data'],
+                    },{
+                        name: "Prior Month",
+                        dataLabels: {
+                                        //enabled: true,
+                                        color: "#0080FF",
+                                        formatter: function(){
+                                            return ((this.y).toFixed(2));
+                                        },
+                                        rotation:270,
+                                        x: 4,
+                                        y:-30,
+                                    },
+                        color: '#0080FF',
+                        type: "line",
+                        lineWidth: 2,
+                        marker: {
+                          symbol: 'circle',
+                          lineColor: null,
+                          radius: 3,
+                          lineWidth: 1
+                        },
+
+                        data: {{ kwargs.chart06_data|safe }}[2]['data'],
+                    }],
+            //series: {{ kwargs.chart06_data|safe }},
+    };
+
+    chart07_options = {
+            chart: {
+                marginRight: 30,
+                marginTop: 75,
+                marginBottom: 110,
+                animation: {
+                    duration: 1000
+                }
+            },
+            title: {
+                text: 'NCG: % $ Decline (amount)',
+                style: {
+                    color: '#002f87',
+                    font: '15px Lucida Sans',
+                },
+                y: 40,
+            },
+            credits: {
+                enabled:false
+            },
+            xAxis: {
+                categories: {{kwargs.chart07_x|safe}}['data'],
+                title: {
+                    text: 'Date --->',
+                    style: {
+                        color: '#000000',
+                        font: '12px Lucida Sans',
+                        /*color: Highcharts.getOptions().colors[1]*/
+                    }
+                },
+                labels: {
+                    rotation: -90,
+                    align: 'right',
+                    style: {
+                        color: '#000000',
+                        font: '12px Lucida Sans',
+                    }
+                }
+            },
+            tooltip: {
+                    // followTouchMove: true,
+                    // followPointer: true,
+                    positioner: function () {
+                    return { x: 20, y: 0 };
+                    },
+                    backgroundColor: '#FFFFFF',
+                    style: {
+                    fontSize: '10px',
+                    padding: '8px'
+                    },
+
+                    formatter: function() {
+                    var s = 'Date: <b>'+ this.x +'</b> <br/>'
+                   // s += 'Name of series: <b>' + this.series.name + '</b> <br/>'
+                    s += 'Rate: <b> ' + Highcharts.numberFormat((this.y * 100).toFixed(2),2) + '%</b>'
+
+                    return s;
+                          },
+
+                      },
+            yAxis: { // Primary yAxis
+                labels: {
+                    enabled:true,
+                    formatter: function(){
+                        return ((this.value * 100).toFixed(2) + '%');
+                    },
+                    style: {
+                        color: '#000000',
+                        font: '12px Lucida Sans',
+                        /*color: Highcharts.getOptions().colors[4]*/
+                    }
+                },
+                title: {
+                    text: '% Rate --->',
+                    style: {
+                        color: '#000000',
+                        font: '12px Lucida Sans',
+                        /*color: Highcharts.getOptions().colors[4]*/
+                    }
+                },
+                gridLineColor: '#A0A0A0',
+                gridLineDashStyle: 'dash',
+                gridLineWidth: 0.5
+            },
+            legend: {
+                layout: 'horizontal',
+                align: 'left',
+                x: 70,
+                verticalAlign: 'bottom',
+                y: 10,
+                floating: true,
+                itemStyle: {
+                    color: '#000000',
+                    font: '10px Lucida Sans',
+                },
+                backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor)
+            },
+            series: [{
+                        name: "Current Week",
+                        dataLabels: {
+                                        //enabled: true,
+                                        color: '#c80505',
+                                        formatter: function(){
+                                            return ((this.y * 100).toFixed(2));
+                                        },
+                                        rotation:270,
+                                        x: 4,
+                                        y: 32,
+                                    },
+                        color: '#c80505',
+                        type: "line",
+                        lineWidth: 2,
+                        marker: {
+                          symbol: 'circle',
+                          lineColor: null,
+                          radius: 3,
+                          lineWidth: 1
+                        },
+
+                        data: {{ kwargs.chart07_data|safe }}[0]['data'],
+
+                    },{
+                        name: "Prior Week",
+                        dataLabels: {
+                                        //enabled: true,
+                                        color: "#053246",
+                                        formatter: function(){
+                                            return ((this.y * 100).toFixed(2));
+                                        },
+                                        rotation:270,
+                                        x: 4,
+                                        y:-30,
+                                    },
+                        color: '#053246',
+                        type: "line",
+                        lineWidth: 2,
+                        marker: {
+                          symbol: 'circle',
+                          lineColor: null,
+                          radius: 3,
+                          lineWidth: 1
+                        },
+
+                        data: {{ kwargs.chart07_data|safe }}[1]['data'],
+                    },{
+                        name: "Prior Month",
+                        dataLabels: {
+                                        //enabled: true,
+                                        color: "#0080FF",
+                                        formatter: function(){
+                                            return ((this.y * 100).toFixed(2));
+                                        },
+                                        rotation:270,
+                                        x: 4,
+                                        y:-30,
+                                    },
+                        color: '#0080FF',
+                        type: "line",
+                        lineWidth: 2,
+                        marker: {
+                          symbol: 'circle',
+                          lineColor: null,
+                          radius: 3,
+                          lineWidth: 1
+                        },
+
+                        data: {{ kwargs.chart07_data|safe }}[2]['data'],
+                    }],
+            //series: {{ kwargs.chart07_data|safe }},
+    };
+
+    chart08_options = {
+            chart: {
+                marginRight: 30,
+                marginTop: 75,
+                marginBottom: 110,
+                animation: {
+                    duration: 1000
+                }
+            },
+            title: {
+                text: 'NCG: % # Decline (units)',
+                style: {
+                    color: '#002f87',
+                    font: '15px Lucida Sans',
+                },
+                y: 40,
+            },
+            credits: {
+                enabled:false
+            },
+            xAxis: {
+                categories: {{kwargs.chart08_x|safe}}['data'],
+                title: {
+                    text: 'Date --->',
+                    style: {
+                        color: '#000000',
+                        font: '12px Lucida Sans',
+                        /*color: Highcharts.getOptions().colors[1]*/
+                    }
+                },
+                labels: {
+                    rotation: -90,
+                    align: 'right',
+                    style: {
+                        color: '#000000',
+                        font: '12px Lucida Sans',
+                    }
+                }
+            },
+            tooltip: {
+                    // followTouchMove: true,
+                    // followPointer: true,
+                    positioner: function () {
+                    return { x: 20, y: 0 };
+                    },
+                    backgroundColor: '#FFFFFF',
+                    style: {
+                    fontSize: '10px',
+                    padding: '8px'
+                    },
+
+                    formatter: function() {
+                    var s = 'Date: <b>'+ this.x +'</b> <br/>'
+                   // s += 'Name of series: <b>' + this.series.name + '</b> <br/>'
+                    s += 'Rate: <b> ' + Highcharts.numberFormat((this.y * 100).toFixed(2),2) + '%</b>'
+
+                    return s;
+                          },
+
+                      },
+            yAxis: { // Primary yAxis
+                labels: {
+                    enabled:true,
+                    formatter: function(){
+                        return ((this.value * 100).toFixed(2) + '%');
+                    },
+                    style: {
+                        color: '#000000',
+                        font: '12px Lucida Sans',
+                        /*color: Highcharts.getOptions().colors[4]*/
+                    }
+                },
+                title: {
+                    text: '% Rate --->',
+                    style: {
+                        color: '#000000',
+                        font: '12px Lucida Sans',
+                        /*color: Highcharts.getOptions().colors[4]*/
+                    }
+                },
+                gridLineColor: '#A0A0A0',
+                gridLineDashStyle: 'dash',
+                gridLineWidth: 0.5
+            },
+            legend: {
+                layout: 'horizontal',
+                align: 'left',
+                x: 70,
+                verticalAlign: 'bottom',
+                y: 10,
+                floating: true,
+                itemStyle: {
+                    color: '#000000',
+                    font: '10px Lucida Sans',
+                },
+                backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor)
+            },
+            series: [{
+                        name: "Current Week",
+                        dataLabels: {
+                                        //enabled: true,
+                                        color: '#c80505',
+                                        formatter: function(){
+                                            return ((this.y).toFixed(2));
+                                        },
+                                        rotation:270,
+                                        x: 4,
+                                        y: 32,
+                                    },
+                        color: '#c80505',
+                        type: "line",
+                        lineWidth: 2,
+                        marker: {
+                          symbol: 'circle',
+                          lineColor: null,
+                          radius: 3,
+                          lineWidth: 1
+                        },
+
+                        data: {{ kwargs.chart08_data|safe }}[0]['data'],
+
+                    },{
+                        name: "Prior Week",
+                        dataLabels: {
+                                        //enabled: true,
+                                        color: "#053246",
+                                        formatter: function(){
+                                            return ((this.y).toFixed(2));
+                                        },
+                                        rotation:270,
+                                        x: 4,
+                                        y:-30,
+                                    },
+                        color: '#053246',
+                        type: "line",
+                        lineWidth: 2,
+                        marker: {
+                          symbol: 'circle',
+                          lineColor: null,
+                          radius: 3,
+                          lineWidth: 1
+                        },
+
+                        data: {{ kwargs.chart08_data|safe }}[1]['data'],
+                    },{
+                        name: "Prior Month",
+                        dataLabels: {
+                                        //enabled: true,
+                                        color: "#0080FF",
+                                        formatter: function(){
+                                            return ((this.y).toFixed(2));
+                                        },
+                                        rotation:270,
+                                        x: 4,
+                                        y:-30,
+                                    },
+                        color: '#0080FF',
+                        type: "line",
+                        lineWidth: 2,
+                        marker: {
+                          symbol: 'circle',
+                          lineColor: null,
+                          radius: 3,
+                          lineWidth: 1
+                        },
+
+                        data: {{ kwargs.chart08_data|safe }}[2]['data'],
+                    }],
+            //series: {{ kwargs.chart08_data|safe }},
+    };
+
+    chart09_options = {
+            chart: {
+                marginRight: 30,
+                marginTop: 75,
+                marginBottom: 110,
+                animation: {
+                    duration: 1000
+                }
+            },
+            title: {
+                text: 'NCG: % $ Processor Decline (amount)',
+                style: {
+                    color: '#002f87',
+                    font: '15px Lucida Sans',
+                },
+                y: 40,
+            },
+            credits: {
+                enabled:false
+            },
+            xAxis: {
+                categories: {{kwargs.chart09_x|safe}}['data'],
+                title: {
+                    text: 'Date --->',
+                    style: {
+                        color: '#000000',
+                        font: '12px Lucida Sans',
+                        /*color: Highcharts.getOptions().colors[1]*/
+                    }
+                },
+                labels: {
+                    rotation: -90,
+                    align: 'right',
+                    style: {
+                        color: '#000000',
+                        font: '12px Lucida Sans',
+                    }
+                }
+            },
+            tooltip: {
+                    // followTouchMove: true,
+                    // followPointer: true,
+                    positioner: function () {
+                    return { x: 20, y: 0 };
+                    },
+                    backgroundColor: '#FFFFFF',
+                    style: {
+                    fontSize: '10px',
+                    padding: '8px'
+                    },
+
+                    formatter: function() {
+                    var s = 'Date: <b>'+ this.x +'</b> <br/>'
+                   // s += 'Name of series: <b>' + this.series.name + '</b> <br/>'
+                    s += 'Rate: <b> ' + Highcharts.numberFormat((this.y * 100).toFixed(2),2) + '%</b>'
+
+                    return s;
+                          },
+
+                      },
+            yAxis: { // Primary yAxis
+                labels: {
+                    enabled:true,
+                    formatter: function(){
+                        return ((this.value * 100).toFixed(2) + '%');
+                    },
+                    style: {
+                        color: '#000000',
+                        font: '12px Lucida Sans',
+                        /*color: Highcharts.getOptions().colors[4]*/
+                    }
+                },
+                title: {
+                    text: '% Rate --->',
+                    style: {
+                        color: '#000000',
+                        font: '12px Lucida Sans',
+                        /*color: Highcharts.getOptions().colors[4]*/
+                    }
+                },
+                gridLineColor: '#A0A0A0',
+                gridLineDashStyle: 'dash',
+                gridLineWidth: 0.5
+            },
+            legend: {
+                layout: 'horizontal',
+                align: 'left',
+                x: 70,
+                verticalAlign: 'bottom',
+                y: 10,
+                floating: true,
+                itemStyle: {
+                    color: '#000000',
+                    font: '10px Lucida Sans',
+                },
+                backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor)
+            },
+            series: [{
+                        name: "Current Week",
+                        dataLabels: {
+                                        //enabled: true,
+                                        color: '#c80505',
+                                        formatter: function(){
+                                            return ((this.y * 100).toFixed(2));
+                                        },
+                                        rotation:270,
+                                        x: 4,
+                                        y: 32,
+                                    },
+                        color: '#c80505',
+                        type: "line",
+                        lineWidth: 2,
+                        marker: {
+                          symbol: 'circle',
+                          lineColor: null,
+                          radius: 3,
+                          lineWidth: 1
+                        },
+
+                        data: {{ kwargs.chart09_data|safe }}[0]['data'],
+
+                    },{
+                        name: "Prior Week",
+                        dataLabels: {
+                                        //enabled: true,
+                                        color: "#053246",
+                                        formatter: function(){
+                                            return ((this.y * 100).toFixed(2));
+                                        },
+                                        rotation:270,
+                                        x: 4,
+                                        y:-30,
+                                    },
+                        color: '#053246',
+                        type: "line",
+                        lineWidth: 2,
+                        marker: {
+                          symbol: 'circle',
+                          lineColor: null,
+                          radius: 3,
+                          lineWidth: 1
+                        },
+
+                        data: {{ kwargs.chart09_data|safe }}[1]['data'],
+                    },{
+                        name: "Prior Month",
+                        dataLabels: {
+                                        //enabled: true,
+                                        color: "#0080FF",
+                                        formatter: function(){
+                                            return ((this.y * 100).toFixed(2));
+                                        },
+                                        rotation:270,
+                                        x: 4,
+                                        y:-30,
+                                    },
+                        color: '#0080FF',
+                        type: "line",
+                        lineWidth: 2,
+                        marker: {
+                          symbol: 'circle',
+                          lineColor: null,
+                          radius: 3,
+                          lineWidth: 1
+                        },
+
+                        data: {{ kwargs.chart09_data|safe }}[2]['data'],
+                    }],
+            //series: {{ kwargs.chart09_data|safe }},
+    };
+
+    chart10_options = {
+            chart: {
+                marginRight: 30,
+                marginTop: 75,
+                marginBottom: 110,
+                animation: {
+                    duration: 1000
+                }
+            },
+            title: {
+                text: 'NCG: % # Processor Decline (units)',
+                style: {
+                    color: '#002f87',
+                    font: '15px Lucida Sans',
+                },
+                y: 40,
+            },
+            credits: {
+                enabled:false
+            },
+            xAxis: {
+                categories: {{kwargs.chart10_x|safe}}['data'],
+                title: {
+                    text: 'Date --->',
+                    style: {
+                        color: '#000000',
+                        font: '12px Lucida Sans',
+                        /*color: Highcharts.getOptions().colors[1]*/
+                    }
+                },
+                labels: {
+                    rotation: -90,
+                    align: 'right',
+                    style: {
+                        color: '#000000',
+                        font: '12px Lucida Sans',
+                    }
+                }
+            },
+            tooltip: {
+                    // followTouchMove: true,
+                    // followPointer: true,
+                    positioner: function () {
+                    return { x: 20, y: 0 };
+                    },
+                    backgroundColor: '#FFFFFF',
+                    style: {
+                    fontSize: '10px',
+                    padding: '8px'
+                    },
+
+                    formatter: function() {
+                    var s = 'Date: <b>'+ this.x +'</b> <br/>'
+                   // s += 'Name of series: <b>' + this.series.name + '</b> <br/>'
+                    s += 'Rate: <b> ' + Highcharts.numberFormat((this.y * 100).toFixed(2),2) + '%</b>'
+
+                    return s;
+                          },
+
+                      },
+            yAxis: { // Primary yAxis
+                labels: {
+                    enabled:true,
+                    formatter: function(){
+                        return ((this.value * 100).toFixed(2) + '%');
+                    },
+                    style: {
+                        color: '#000000',
+                        font: '12px Lucida Sans',
+                        /*color: Highcharts.getOptions().colors[4]*/
+                    }
+                },
+                title: {
+                    text: '% Rate --->',
+                    style: {
+                        color: '#000000',
+                        font: '12px Lucida Sans',
+                        /*color: Highcharts.getOptions().colors[4]*/
+                    }
+                },
+                gridLineColor: '#A0A0A0',
+                gridLineDashStyle: 'dash',
+                gridLineWidth: 0.5
+            },
+            legend: {
+                layout: 'horizontal',
+                align: 'left',
+                x: 70,
+                verticalAlign: 'bottom',
+                y: 10,
+                floating: true,
+                itemStyle: {
+                    color: '#000000',
+                    font: '10px Lucida Sans',
+                },
+                backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor)
+            },
+            series: [{
+                        name: "Current Week",
+                        dataLabels: {
+                                        //enabled: true,
+                                        color: '#c80505',
+                                        formatter: function(){
+                                            return ((this.y).toFixed(2));
+                                        },
+                                        rotation:270,
+                                        x: 4,
+                                        y: 32,
+                                    },
+                        color: '#c80505',
+                        type: "line",
+                        lineWidth: 2,
+                        marker: {
+                          symbol: 'circle',
+                          lineColor: null,
+                          radius: 3,
+                          lineWidth: 1
+                        },
+
+                        data: {{ kwargs.chart10_data|safe }}[0]['data'],
+
+                    },{
+                        dataLabels: {
+                        name: "Prior Week",
+                                        //enabled: true,
+                                        color: "#053246",
+                                        formatter: function(){
+                                            return ((this.y).toFixed(2));
+                                        },
+                                        rotation:270,
+                                        x: 4,
+                                        y:-30,
+                                    },
+                        color: '#053246',
+                        type: "line",
+                        lineWidth: 2,
+                        marker: {
+                          symbol: 'circle',
+                          lineColor: null,
+                          radius: 3,
+                          lineWidth: 1
+                        },
+
+                        data: {{ kwargs.chart10_data|safe }}[1]['data'],
+                    },{
+                        name: "Prior Month",
+                        dataLabels: {
+                                        //enabled: true,
+                                        color: "#0080FF",
+                                        formatter: function(){
+                                            return ((this.y).toFixed(2));
+                                        },
+                                        rotation:270,
+                                        x: 4,
+                                        y:-30,
+                                    },
+                        color: '#0080FF',
+                        type: "line",
+                        lineWidth: 2,
+                        marker: {
+                          symbol: 'circle',
+                          lineColor: null,
+                          radius: 3,
+                          lineWidth: 1
+                        },
+
+                        data: {{ kwargs.chart10_data|safe }}[2]['data'],
+                    }],
+            //series: {{ kwargs.chart10_data|safe }},
+    };
+
+    chart11_options = {
+            chart: {
+                marginRight: 30,
+                marginTop: 75,
+                marginBottom: 110,
+                animation: {
+                    duration: 1000
+                }
+            },
+            title: {
+                text: 'NCG: % $ Policy Decline (amount)',
+                style: {
+                    color: '#002f87',
+                    font: '15px Lucida Sans',
+                },
+                y: 40,
+            },
+            credits: {
+                enabled:false
+            },
+            xAxis: {
+                categories: {{kwargs.chart11_x|safe}}['data'],
+                title: {
+                    text: 'Date --->',
+                    style: {
+                        color: '#000000',
+                        font: '12px Lucida Sans',
+                        /*color: Highcharts.getOptions().colors[1]*/
+                    }
+                },
+                labels: {
+                    rotation: -90,
+                    align: 'right',
+                    style: {
+                        color: '#000000',
+                        font: '12px Lucida Sans',
+                    }
+                }
+            },
+            tooltip: {
+                    // followTouchMove: true,
+                    // followPointer: true,
+                    positioner: function () {
+                    return { x: 20, y: 0 };
+                    },
+                    backgroundColor: '#FFFFFF',
+                    style: {
+                    fontSize: '10px',
+                    padding: '8px'
+                    },
+
+                    formatter: function() {
+                    var s = 'Date: <b>'+ this.x +'</b> <br/>'
+                   // s += 'Name of series: <b>' + this.series.name + '</b> <br/>'
+                    s += 'Rate: <b> ' + Highcharts.numberFormat((this.y * 100).toFixed(2),2) + '%</b>'
+
+                    return s;
+                          },
+
+                      },
+            yAxis: { // Primary yAxis
+                labels: {
+                    enabled:true,
+                    formatter: function(){
+                        return ((this.value * 100).toFixed(2) + '%');
+                    },
+                    style: {
+                        color: '#000000',
+                        font: '12px Lucida Sans',
+                        /*color: Highcharts.getOptions().colors[4]*/
+                    }
+                },
+                title: {
+                    text: '% Rate --->',
+                    style: {
+                        color: '#000000',
+                        font: '12px Lucida Sans',
+                        /*color: Highcharts.getOptions().colors[4]*/
+                    }
+                },
+                gridLineColor: '#A0A0A0',
+                gridLineDashStyle: 'dash',
+                gridLineWidth: 0.5
+            },
+            legend: {
+                layout: 'horizontal',
+                align: 'left',
+                x: 70,
+                verticalAlign: 'bottom',
+                y: 10,
+                floating: true,
+                itemStyle: {
+                    color: '#000000',
+                    font: '10px Lucida Sans',
+                },
+                backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor)
+            },
+            series: [{
+                        name: "Current Week",
+                        dataLabels: {
+                                        //enabled: true,
+                                        color: '#c80505',
+                                        formatter: function(){
+                                            return ((this.y * 100).toFixed(2));
+                                        },
+                                        rotation:270,
+                                        x: 4,
+                                        y: 32,
+                                    },
+                        color: '#c80505',
+                        type: "line",
+                        lineWidth: 2,
+                        marker: {
+                          symbol: 'circle',
+                          lineColor: null,
+                          radius: 3,
+                          lineWidth: 1
+                        },
+
+                        data: {{ kwargs.chart11_data|safe }}[0]['data'],
+
+                    },{
+                        name: "Prior Week",
+                        dataLabels: {
+                                        //enabled: true,
+                                        color: "#053246",
+                                        formatter: function(){
+                                            return ((this.y * 100).toFixed(2));
+                                        },
+                                        rotation:270,
+                                        x: 4,
+                                        y:-30,
+                                    },
+                        color: '#053246',
+                        type: "line",
+                        lineWidth: 2,
+                        marker: {
+                          symbol: 'circle',
+                          lineColor: null,
+                          radius: 3,
+                          lineWidth: 1
+                        },
+
+                        data: {{ kwargs.chart11_data|safe }}[1]['data'],
+                    },{
+                        name: "Prior Month",
+                        dataLabels: {
+                                        //enabled: true,
+                                        color: "#0080FF",
+                                        formatter: function(){
+                                            return ((this.y * 100).toFixed(2));
+                                        },
+                                        rotation:270,
+                                        x: 4,
+                                        y:-30,
+                                    },
+                        color: '#0080FF',
+                        type: "line",
+                        lineWidth: 2,
+                        marker: {
+                          symbol: 'circle',
+                          lineColor: null,
+                          radius: 3,
+                          lineWidth: 1
+                        },
+
+                        data: {{ kwargs.chart11_data|safe }}[2]['data'],
+                    }],
+            //series: {{ kwargs.chart11_data|safe }},
+    };
+
+    chart12_options = {
+            chart: {
+                marginRight: 30,
+                marginTop: 75,
+                marginBottom: 110,
+                animation: {
+                    duration: 1000
+                }
+            },
+            title: {
+                text: 'NCG: % # Policy Decline (units)',
+                style: {
+                    color: '#002f87',
+                    font: '15px Lucida Sans',
+                },
+                y: 40,
+            },
+            credits: {
+                enabled:false
+            },
+            xAxis: {
+                categories: {{kwargs.chart12_x|safe}}['data'],
+                title: {
+                    text: 'Date --->',
+                    style: {
+                        color: '#000000',
+                        font: '12px Lucida Sans',
+                        /*color: Highcharts.getOptions().colors[1]*/
+                    }
+                },
+                labels: {
+                    rotation: -90,
+                    align: 'right',
+                    style: {
+                        color: '#000000',
+                        font: '12px Lucida Sans',
+                    }
+                }
+            },
+            tooltip: {
+                    // followTouchMove: true,
+                    // followPointer: true,
+                    positioner: function () {
+                    return { x: 20, y: 0 };
+                    },
+                    backgroundColor: '#FFFFFF',
+                    style: {
+                    fontSize: '10px',
+                    padding: '8px'
+                    },
+
+                    formatter: function() {
+                    var s = 'Date: <b>'+ this.x +'</b> <br/>'
+                   // s += 'Name of series: <b>' + this.series.name + '</b> <br/>'
+                    s += 'Rate: <b> ' + Highcharts.numberFormat((this.y * 100).toFixed(2),2) + '%</b>'
+
+                    return s;
+                          },
+
+                      },
+            yAxis: { // Primary yAxis
+                labels: {
+                    enabled:true,
+                    formatter: function(){
+                        return ((this.value * 100).toFixed(2) + '%');
+                    },
+                    style: {
+                        color: '#000000',
+                        font: '12px Lucida Sans',
+                        /*color: Highcharts.getOptions().colors[4]*/
+                    }
+                },
+                title: {
+                    text: '% Rate --->',
+                    style: {
+                        color: '#000000',
+                        font: '12px Lucida Sans',
+                        /*color: Highcharts.getOptions().colors[4]*/
+                    }
+                },
+                gridLineColor: '#A0A0A0',
+                gridLineDashStyle: 'dash',
+                gridLineWidth: 0.5
+            },
+            legend: {
+                layout: 'horizontal',
+                align: 'left',
+                x: 70,
+                verticalAlign: 'bottom',
+                y: 10,
+                floating: true,
+                itemStyle: {
+                    color: '#000000',
+                    font: '10px Lucida Sans',
+                },
+                backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor)
+            },
+            series: [{
+                        name: "Current Week",
+                        dataLabels: {
+                                        //enabled: true,
+                                        color: '#c80505',
+                                        formatter: function(){
+                                            return ((this.y).toFixed(2));
+                                        },
+                                        rotation:270,
+                                        x: 4,
+                                        y: 32,
+                                    },
+                        color: '#c80505',
+                        type: "line",
+                        lineWidth: 2,
+                        marker: {
+                          symbol: 'circle',
+                          lineColor: null,
+                          radius: 3,
+                          lineWidth: 1
+                        },
+
+                        data: {{ kwargs.chart12_data|safe }}[0]['data'],
+
+                    },{
+                        name: "Prior Week",
+                        dataLabels: {
+                                        //enabled: true,
+                                        color: "#053246",
+                                        formatter: function(){
+                                            return ((this.y).toFixed(2));
+                                        },
+                                        rotation:270,
+                                        x: 4,
+                                        y:-30,
+                                    },
+                        color: '#053246',
+                        type: "line",
+                        lineWidth: 2,
+                        marker: {
+                          symbol: 'circle',
+                          lineColor: null,
+                          radius: 3,
+                          lineWidth: 1
+                        },
+
+                        data: {{ kwargs.chart12_data|safe }}[1]['data'],
+                    },{
+                        name: "Prior Month",
+                        dataLabels: {
+                                        //enabled: true,
+                                        color: "#0080FF",
+                                        formatter: function(){
+                                            return ((this.y).toFixed(2));
+                                        },
+                                        rotation:270,
+                                        x: 4,
+                                        y:-30,
+                                    },
+                        color: '#0080FF',
+                        type: "line",
+                        lineWidth: 2,
+                        marker: {
+                          symbol: 'circle',
+                          lineColor: null,
+                          radius: 3,
+                          lineWidth: 1
+                        },
+
+                        data: {{ kwargs.chart12_data|safe }}[2]['data'],
+                    }],
+            //series: {{ kwargs.chart12_data|safe }},
+    };
+
+    chart13_options = {
+            chart: {
+                marginRight: 30,
+                marginTop: 75,
+                marginBottom: 110,
+                animation: {
+                    duration: 1000
+                }
+            },
+            title: {
+                text: 'NCG: % $ CARD Decline (amount)',
+                style: {
+                    color: '#002f87',
+                    font: '15px Lucida Sans',
+                },
+                y: 40,
+            },
+            credits: {
+                enabled:false
+            },
+            xAxis: {
+                categories: {{kwargs.chart13_x|safe}}['data'],
+                title: {
+                    text: 'Date --->',
+                    style: {
+                        color: '#000000',
+                        font: '12px Lucida Sans',
+                        /*color: Highcharts.getOptions().colors[1]*/
+                    }
+                },
+                labels: {
+                    rotation: -90,
+                    align: 'right',
+                    style: {
+                        color: '#000000',
+                        font: '12px Lucida Sans',
+                    }
+                }
+            },
+            tooltip: {
+                    // followTouchMove: true,
+                    // followPointer: true,
+                    positioner: function () {
+                    return { x: 20, y: 0 };
+                    },
+                    backgroundColor: '#FFFFFF',
+                    style: {
+                    fontSize: '10px',
+                    padding: '8px'
+                    },
+
+                    formatter: function() {
+                    var s = 'Date: <b>'+ this.x +'</b> <br/>'
+                   // s += 'Name of series: <b>' + this.series.name + '</b> <br/>'
+                    s += 'Rate: <b> ' + Highcharts.numberFormat((this.y * 100).toFixed(2),2) + '%</b>'
+
+                    return s;
+                          },
+
+                      },
+            yAxis: { // Primary yAxis
+                labels: {
+                    enabled:true,
+                    formatter: function(){
+                        return ((this.value * 100).toFixed(2) + '%');
+                    },
+                    style: {
+                        color: '#000000',
+                        font: '12px Lucida Sans',
+                        /*color: Highcharts.getOptions().colors[4]*/
+                    }
+                },
+                title: {
+                    text: '% Rate --->',
+                    style: {
+                        color: '#000000',
+                        font: '12px Lucida Sans',
+                        /*color: Highcharts.getOptions().colors[4]*/
+                    }
+                },
+                gridLineColor: '#A0A0A0',
+                gridLineDashStyle: 'dash',
+                gridLineWidth: 0.5
+            },
+            legend: {
+                layout: 'horizontal',
+                align: 'left',
+                x: 70,
+                verticalAlign: 'bottom',
+                y: 10,
+                floating: true,
+                itemStyle: {
+                    color: '#000000',
+                    font: '10px Lucida Sans',
+                },
+                backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor)
+            },
+            series: [{
+                        name: "Current Week",
+                        dataLabels: {
+                                        //enabled: true,
+                                        color: '#c80505',
+                                        formatter: function(){
+                                            return ((this.y * 100).toFixed(2));
+                                        },
+                                        rotation:270,
+                                        x: 4,
+                                        y: 32,
+                                    },
+                        color: '#c80505',
+                        type: "line",
+                        lineWidth: 2,
+                        marker: {
+                          symbol: 'circle',
+                          lineColor: null,
+                          radius: 3,
+                          lineWidth: 1
+                        },
+
+                        data: {{ kwargs.chart13_data|safe }}[0]['data'],
+
+                    },{
+                        name: "Prior Week",
+                        dataLabels: {
+                                        //enabled: true,
+                                        color: "#053246",
+                                        formatter: function(){
+                                            return ((this.y * 100).toFixed(2));
+                                        },
+                                        rotation:270,
+                                        x: 4,
+                                        y:-30,
+                                    },
+                        color: '#053246',
+                        type: "line",
+                        lineWidth: 2,
+                        marker: {
+                          symbol: 'circle',
+                          lineColor: null,
+                          radius: 3,
+                          lineWidth: 1
+                        },
+
+                        data: {{ kwargs.chart13_data|safe }}[1]['data'],
+                    },{
+                        name: "Prior Month",
+                        dataLabels: {
+                                        //enabled: true,
+                                        color: "#0080FF",
+                                        formatter: function(){
+                                            return ((this.y * 100).toFixed(2));
+                                        },
+                                        rotation:270,
+                                        x: 4,
+                                        y:-30,
+                                    },
+                        color: '#0080FF',
+                        type: "line",
+                        lineWidth: 2,
+                        marker: {
+                          symbol: 'circle',
+                          lineColor: null,
+                          radius: 3,
+                          lineWidth: 1
+                        },
+
+                        data: {{ kwargs.chart13_data|safe }}[2]['data'],
+                    }],
+            //series: {{ kwargs.chart13_data|safe }},
+    };
+
+    chart14_options = {
+            chart: {
+                marginRight: 30,
+                marginTop: 75,
+                marginBottom: 110,
+                animation: {
+                    duration: 1000
+                }
+            },
+            title: {
+                text: 'NCG: % # CARD Decline (units)',
+                style: {
+                    color: '#002f87',
+                    font: '15px Lucida Sans',
+                },
+                y: 40,
+            },
+            credits: {
+                enabled:false
+            },
+            xAxis: {
+                categories: {{kwargs.chart14_x|safe}}['data'],
+                title: {
+                    text: 'Date --->',
+                    style: {
+                        color: '#000000',
+                        font: '12px Lucida Sans',
+                        /*color: Highcharts.getOptions().colors[1]*/
+                    }
+                },
+                labels: {
+                    rotation: -90,
+                    align: 'right',
+                    style: {
+                        color: '#000000',
+                        font: '12px Lucida Sans',
+                    }
+                }
+            },
+            tooltip: {
+                    // followTouchMove: true,
+                    // followPointer: true,
+                    positioner: function () {
+                    return { x: 20, y: 0 };
+                    },
+                    backgroundColor: '#FFFFFF',
+                    style: {
+                    fontSize: '10px',
+                    padding: '8px'
+                    },
+
+                    formatter: function() {
+                    var s = 'Date: <b>'+ this.x +'</b> <br/>'
+                   // s += 'Name of series: <b>' + this.series.name + '</b> <br/>'
+                    s += 'Rate: <b> ' + Highcharts.numberFormat((this.y * 100).toFixed(2),2) + '%</b>'
+
+                    return s;
+                          },
+
+                      },
+            yAxis: { // Primary yAxis
+                labels: {
+                    enabled:true,
+                    formatter: function(){
+                        return ((this.value * 100).toFixed(2) + '%');
+                    },
+                    style: {
+                        color: '#000000',
+                        font: '12px Lucida Sans',
+                        /*color: Highcharts.getOptions().colors[4]*/
+                    }
+                },
+                title: {
+                    text: '% Rate --->',
+                    style: {
+                        color: '#000000',
+                        font: '12px Lucida Sans',
+                        /*color: Highcharts.getOptions().colors[4]*/
+                    }
+                },
+                gridLineColor: '#A0A0A0',
+                gridLineDashStyle: 'dash',
+                gridLineWidth: 0.5
+            },
+            legend: {
+                layout: 'horizontal',
+                align: 'left',
+                x: 70,
+                verticalAlign: 'bottom',
+                y: 10,
+                floating: true,
+                itemStyle: {
+                    color: '#000000',
+                    font: '10px Lucida Sans',
+                },
+                backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor)
+            },
+            series: [{
+                        name: "Current Week",
+                        dataLabels: {
+                                        //enabled: true,
+                                        color: '#c80505',
+                                        formatter: function(){
+                                            return ((this.y).toFixed(2));
+                                        },
+                                        rotation:270,
+                                        x: 4,
+                                        y: 32,
+                                    },
+                        color: '#c80505',
+                        type: "line",
+                        lineWidth: 2,
+                        marker: {
+                          symbol: 'circle',
+                          lineColor: null,
+                          radius: 3,
+                          lineWidth: 1
+                        },
+
+                        data: {{ kwargs.chart14_data|safe }}[0]['data'],
+
+                    },{
+                        name: "Prior Week",
+                        dataLabels: {
+                                        //enabled: true,
+                                        color: "#053246",
+                                        formatter: function(){
+                                            return ((this.y).toFixed(2));
+                                        },
+                                        rotation:270,
+                                        x: 4,
+                                        y:-30,
+                                    },
+                        color: '#053246',
+                        type: "line",
+                        lineWidth: 2,
+                        marker: {
+                          symbol: 'circle',
+                          lineColor: null,
+                          radius: 3,
+                          lineWidth: 1
+                        },
+
+                        data: {{ kwargs.chart14_data|safe }}[1]['data'],
+                    },{
+                        name: "Prior Month",
+                        dataLabels: {
+                                        //enabled: true,
+                                        color: "#0080FF",
+                                        formatter: function(){
+                                            return ((this.y).toFixed(2));
+                                        },
+                                        rotation:270,
+                                        x: 4,
+                                        y:-30,
+                                    },
+                        color: '#0080FF',
+                        type: "line",
+                        lineWidth: 2,
+                        marker: {
+                          symbol: 'circle',
+                          lineColor: null,
+                          radius: 3,
+                          lineWidth: 1
+                        },
+
+                        data: {{ kwargs.chart14_data|safe }}[2]['data'],
+                    }],
+            //series: {{ kwargs.chart14_data|safe }},
+    };
+
+    chart15_options = {
+            chart: {
+                marginRight: 30,
+                marginTop: 75,
+                marginBottom: 110,
+                animation: {
+                    duration: 1000
+                }
+            },
+            title: {
+                text: 'NCG: % $ Bank Decline (amount)',
+                style: {
+                    color: '#002f87',
+                    font: '15px Lucida Sans',
+                },
+                y: 40,
+            },
+            credits: {
+                enabled:false
+            },
+            xAxis: {
+                categories: {{kwargs.chart15_x|safe}}['data'],
+                title: {
+                    text: 'Date --->',
+                    style: {
+                        color: '#000000',
+                        font: '12px Lucida Sans',
+                        /*color: Highcharts.getOptions().colors[1]*/
+                    }
+                },
+                labels: {
+                    rotation: -90,
+                    align: 'right',
+                    style: {
+                        color: '#000000',
+                        font: '12px Lucida Sans',
+                    }
+                }
+            },
+            tooltip: {
+                    // followTouchMove: true,
+                    // followPointer: true,
+                    positioner: function () {
+                    return { x: 20, y: 0 };
+                    },
+                    backgroundColor: '#FFFFFF',
+                    style: {
+                    fontSize: '10px',
+                    padding: '8px'
+                    },
+
+                    formatter: function() {
+                    var s = 'Date: <b>'+ this.x +'</b> <br/>'
+                   // s += 'Name of series: <b>' + this.series.name + '</b> <br/>'
+                    s += 'Rate: <b> ' + Highcharts.numberFormat((this.y * 100).toFixed(2),2) + '%</b>'
+
+                    return s;
+                          },
+
+                      },
+            yAxis: { // Primary yAxis
+                labels: {
+                    enabled:true,
+                    formatter: function(){
+                        return ((this.value * 100).toFixed(2) + '%');
+                    },
+                    style: {
+                        color: '#000000',
+                        font: '12px Lucida Sans',
+                        /*color: Highcharts.getOptions().colors[4]*/
+                    }
+                },
+                title: {
+                    text: '% Rate --->',
+                    style: {
+                        color: '#000000',
+                        font: '12px Lucida Sans',
+                        /*color: Highcharts.getOptions().colors[4]*/
+                    }
+                },
+                gridLineColor: '#A0A0A0',
+                gridLineDashStyle: 'dash',
+                gridLineWidth: 0.5
+            },
+            legend: {
+                layout: 'horizontal',
+                align: 'left',
+                x: 70,
+                verticalAlign: 'bottom',
+                y: 10,
+                floating: true,
+                itemStyle: {
+                    color: '#000000',
+                    font: '10px Lucida Sans',
+                },
+                backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor)
+            },
+            series: [{
+                        name: "Current Week",
+                        dataLabels: {
+                                        //enabled: true,
+                                        color: '#c80505',
+                                        formatter: function(){
+                                            return ((this.y * 100).toFixed(2));
+                                        },
+                                        rotation:270,
+                                        x: 4,
+                                        y: 32,
+                                    },
+                        color: '#c80505',
+                        type: "line",
+                        lineWidth: 2,
+                        marker: {
+                          symbol: 'circle',
+                          lineColor: null,
+                          radius: 3,
+                          lineWidth: 1
+                        },
+
+                        data: {{ kwargs.chart15_data|safe }}[0]['data'],
+
+                    },{
+                        name: "Prior Week",
+                        dataLabels: {
+                                        //enabled: true,
+                                        color: "#053246",
+                                        formatter: function(){
+                                            return ((this.y * 100).toFixed(2));
+                                        },
+                                        rotation:270,
+                                        x: 4,
+                                        y:-30,
+                                    },
+                        color: '#053246',
+                        type: "line",
+                        lineWidth: 2,
+                        marker: {
+                          symbol: 'circle',
+                          lineColor: null,
+                          radius: 3,
+                          lineWidth: 1
+                        },
+
+                        data: {{ kwargs.chart15_data|safe }}[1]['data'],
+                    },{
+                        name: "Prior Month",
+                        dataLabels: {
+                                        //enabled: true,
+                                        color: "#0080FF",
+                                        formatter: function(){
+                                            return ((this.y * 100).toFixed(2));
+                                        },
+                                        rotation:270,
+                                        x: 4,
+                                        y:-30,
+                                    },
+                        color: '#0080FF',
+                        type: "line",
+                        lineWidth: 2,
+                        marker: {
+                          symbol: 'circle',
+                          lineColor: null,
+                          radius: 3,
+                          lineWidth: 1
+                        },
+
+                        data: {{ kwargs.chart15_data|safe }}[2]['data'],
+                    }],
+            //series: {{ kwargs.chart15_data|safe }},
+    };
+
+    chart16_options = {
+            chart: {
+                marginRight: 30,
+                marginTop: 75,
+                marginBottom: 110,
+                animation: {
+                    duration: 1000
+                }
+            },
+            title: {
+                text: 'NCG: % # Bank Decline (units)',
+                style: {
+                    color: '#002f87',
+                    font: '15px Lucida Sans',
+                },
+                y: 40,
+            },
+            credits: {
+                enabled:false
+            },
+            xAxis: {
+                categories: {{kwargs.chart16_x|safe}}['data'],
+                title: {
+                    text: 'Date --->',
+                    style: {
+                        color: '#000000',
+                        font: '12px Lucida Sans',
+                        /*color: Highcharts.getOptions().colors[1]*/
+                    }
+                },
+                labels: {
+                    rotation: -90,
+                    align: 'right',
+                    style: {
+                        color: '#000000',
+                        font: '12px Lucida Sans',
+                    }
+                }
+            },
+            tooltip: {
+                    // followTouchMove: true,
+                    // followPointer: true,
+                    positioner: function () {
+                    return { x: 20, y: 0 };
+                    },
+                    backgroundColor: '#FFFFFF',
+                    style: {
+                    fontSize: '10px',
+                    padding: '8px'
+                    },
+
+                    formatter: function() {
+                    var s = 'Date: <b>'+ this.x +'</b> <br/>'
+                   // s += 'Name of series: <b>' + this.series.name + '</b> <br/>'
+                    s += 'Rate: <b> ' + Highcharts.numberFormat((this.y * 100).toFixed(2),2) + '%</b>'
+
+                    return s;
+                          },
+
+                      },
+            yAxis: { // Primary yAxis
+                labels: {
+                    enabled:true,
+                    formatter: function(){
+                        return ((this.value * 100).toFixed(2) + '%');
+                    },
+                    style: {
+                        color: '#000000',
+                        font: '12px Lucida Sans',
+                        /*color: Highcharts.getOptions().colors[4]*/
+                    }
+                },
+                title: {
+                    text: '% Rate --->',
+                    style: {
+                        color: '#000000',
+                        font: '12px Lucida Sans',
+                        /*color: Highcharts.getOptions().colors[4]*/
+                    }
+                },
+                gridLineColor: '#A0A0A0',
+                gridLineDashStyle: 'dash',
+                gridLineWidth: 0.5
+            },
+            legend: {
+                layout: 'horizontal',
+                align: 'left',
+                x: 70,
+                verticalAlign: 'bottom',
+                y: 10,
+                floating: true,
+                itemStyle: {
+                    color: '#000000',
+                    font: '10px Lucida Sans',
+                },
+                backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor)
+            },
+            series: [{
+                        name: "Current Week",
+                        dataLabels: {
+                                        //enabled: true,
+                                        color: '#c80505',
+                                        formatter: function(){
+                                            return ((this.y).toFixed(2));
+                                        },
+                                        rotation:270,
+                                        x: 4,
+                                        y: 32,
+                                    },
+                        color: '#c80505',
+                        type: "line",
+                        lineWidth: 2,
+                        marker: {
+                          symbol: 'circle',
+                          lineColor: null,
+                          radius: 3,
+                          lineWidth: 1
+                        },
+
+                        data: {{ kwargs.chart16_data|safe }}[0]['data'],
+
+                    },{
+                        name: "Prior Week",
+                        dataLabels: {
+                                        //enabled: true,
+                                        color: "#053246",
+                                        formatter: function(){
+                                            return ((this.y).toFixed(2));
+                                        },
+                                        rotation:270,
+                                        x: 4,
+                                        y:-30,
+                                    },
+                        color: '#053246',
+                        type: "line",
+                        lineWidth: 2,
+                        marker: {
+                          symbol: 'circle',
+                          lineColor: null,
+                          radius: 3,
+                          lineWidth: 1
+                        },
+
+                        data: {{ kwargs.chart16_data|safe }}[1]['data'],
+                    },{
+                        name: "Prior Month",
+                        dataLabels: {
+                                        //enabled: true,
+                                        color: "#0080FF",
+                                        formatter: function(){
+                                            return ((this.y).toFixed(2));
+                                        },
+                                        rotation:270,
+                                        x: 4,
+                                        y:-30,
+                                    },
+                        color: '#0080FF',
+                        type: "line",
+                        lineWidth: 2,
+                        marker: {
+                          symbol: 'circle',
+                          lineColor: null,
+                          radius: 3,
+                          lineWidth: 1
+                        },
+
+                        data: {{ kwargs.chart16_data|safe }}[2]['data'],
+                    }],
+            //series: {{ kwargs.chart16_data|safe }},
+    };
+
+    chart17_options = {
+            chart: {
+                marginRight: 30,
+                marginTop: 75,
+                marginBottom: 110,
+                animation: {
+                    duration: 1000
+                }
+            },
+            title: {
+                text: 'NCG: % $ ATO PLD (amount)',
+                style: {
+                    color: '#002f87',
+                    font: '15px Lucida Sans',
+                },
+                y: 40,
+            },
+            credits: {
+                enabled:false
+            },
+            xAxis: {
+                categories: {{kwargs.chart17_x|safe}}['data'],
+                title: {
+                    text: 'Date --->',
+                    style: {
+                        color: '#000000',
+                        font: '12px Lucida Sans',
+                        /*color: Highcharts.getOptions().colors[1]*/
+                    }
+                },
+                labels: {
+                    rotation: -90,
+                    align: 'right',
+                    style: {
+                        color: '#000000',
+                        font: '12px Lucida Sans',
+                    }
+                }
+            },
+            tooltip: {
+                    // followTouchMove: true,
+                    // followPointer: true,
+                    positioner: function () {
+                    return { x: 20, y: 0 };
+                    },
+                    backgroundColor: '#FFFFFF',
+                    style: {
+                    fontSize: '10px',
+                    padding: '8px'
+                    },
+
+                    formatter: function() {
+                    var s = 'Date: <b>'+ this.x +'</b> <br/>'
+                   // s += 'Name of series: <b>' + this.series.name + '</b> <br/>'
+                    s += 'Rate: <b> ' + Highcharts.numberFormat((this.y * 100).toFixed(2),2) + '%</b>'
+
+                    return s;
+                          },
+
+                      },
+            yAxis: { // Primary yAxis
+                labels: {
+                    enabled:true,
+                    formatter: function(){
+                        return ((this.value * 100).toFixed(2) + '%');
+                    },
+                    style: {
+                        color: '#000000',
+                        font: '12px Lucida Sans',
+                        /*color: Highcharts.getOptions().colors[4]*/
+                    }
+                },
+                title: {
+                    text: '% Rate --->',
+                    style: {
+                        color: '#000000',
+                        font: '12px Lucida Sans',
+                        /*color: Highcharts.getOptions().colors[4]*/
+                    }
+                },
+                gridLineColor: '#A0A0A0',
+                gridLineDashStyle: 'dash',
+                gridLineWidth: 0.5
+            },
+            legend: {
+                layout: 'horizontal',
+                align: 'left',
+                x: 70,
+                verticalAlign: 'bottom',
+                y: 10,
+                floating: true,
+                itemStyle: {
+                    color: '#000000',
+                    font: '10px Lucida Sans',
+                },
+                backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor)
+            },
+            series: [{
+                        name: "Current Week",
+                        dataLabels: {
+                                        //enabled: true,
+                                        color: '#c80505',
+                                        formatter: function(){
+                                            return ((this.y * 100).toFixed(2));
+                                        },
+                                        rotation:270,
+                                        x: 4,
+                                        y: 32,
+                                    },
+                        color: '#c80505',
+                        type: "line",
+                        lineWidth: 2,
+                        marker: {
+                          symbol: 'circle',
+                          lineColor: null,
+                          radius: 3,
+                          lineWidth: 1
+                        },
+
+                        data: {{ kwargs.chart17_data|safe }}[0]['data'],
+
+                    },{
+                        name: "Prior Week",
+                        dataLabels: {
+                                        //enabled: true,
+                                        color: "#053246",
+                                        formatter: function(){
+                                            return ((this.y * 100).toFixed(2));
+                                        },
+                                        rotation:270,
+                                        x: 4,
+                                        y:-30,
+                                    },
+                        color: '#053246',
+                        type: "line",
+                        lineWidth: 2,
+                        marker: {
+                          symbol: 'circle',
+                          lineColor: null,
+                          radius: 3,
+                          lineWidth: 1
+                        },
+
+                        data: {{ kwargs.chart17_data|safe }}[1]['data'],
+                    },{
+                        name: "Prior Month",
+                        dataLabels: {
+                                        //enabled: true,
+                                        color: "#0080FF",
+                                        formatter: function(){
+                                            return ((this.y * 100).toFixed(2));
+                                        },
+                                        rotation:270,
+                                        x: 4,
+                                        y:-30,
+                                    },
+                        color: '#0080FF',
+                        type: "line",
+                        lineWidth: 2,
+                        marker: {
+                          symbol: 'circle',
+                          lineColor: null,
+                          radius: 3,
+                          lineWidth: 1
+                        },
+
+                        data: {{ kwargs.chart17_data|safe }}[2]['data'],
+                    }],
+            //series: {{ kwargs.chart17_data|safe }},
+    };
+
+    chart18_options = {
+            chart: {
+                marginRight: 30,
+                marginTop: 75,
+                marginBottom: 110,
+                animation: {
+                    duration: 1000
+                }
+            },
+            title: {
+                text: 'NCG: % # ATO PLD (units)',
+                style: {
+                    color: '#002f87',
+                    font: '15px Lucida Sans',
+                },
+                y: 40,
+            },
+            credits: {
+                enabled:false
+            },
+            xAxis: {
+                categories: {{kwargs.chart18_x|safe}}['data'],
+                title: {
+                    text: 'Date --->',
+                    style: {
+                        color: '#000000',
+                        font: '12px Lucida Sans',
+                        /*color: Highcharts.getOptions().colors[1]*/
+                    }
+                },
+                labels: {
+                    rotation: -90,
+                    align: 'right',
+                    style: {
+                        color: '#000000',
+                        font: '12px Lucida Sans',
+                    }
+                }
+            },
+            tooltip: {
+                    // followTouchMove: true,
+                    // followPointer: true,
+                    positioner: function () {
+                    return { x: 20, y: 0 };
+                    },
+                    backgroundColor: '#FFFFFF',
+                    style: {
+                    fontSize: '10px',
+                    padding: '8px'
+                    },
+
+                    formatter: function() {
+                    var s = 'Date: <b>'+ this.x +'</b> <br/>'
+                   // s += 'Name of series: <b>' + this.series.name + '</b> <br/>'
+                    s += 'Rate: <b> ' + Highcharts.numberFormat((this.y * 100).toFixed(2),2) + '%</b>'
+
+                    return s;
+                          },
+
+                      },
+            yAxis: { // Primary yAxis
+                labels: {
+                    enabled:true,
+                    formatter: function(){
+                        return ((this.value * 100).toFixed(2) + '%');
+                    },
+                    style: {
+                        color: '#000000',
+                        font: '12px Lucida Sans',
+                        /*color: Highcharts.getOptions().colors[4]*/
+                    }
+                },
+                title: {
+                    text: '% Rate --->',
+                    style: {
+                        color: '#000000',
+                        font: '12px Lucida Sans',
+                        /*color: Highcharts.getOptions().colors[4]*/
+                    }
+                },
+                gridLineColor: '#A0A0A0',
+                gridLineDashStyle: 'dash',
+                gridLineWidth: 0.5
+            },
+            legend: {
+                layout: 'horizontal',
+                align: 'left',
+                x: 70,
+                verticalAlign: 'bottom',
+                y: 10,
+                floating: true,
+                itemStyle: {
+                    color: '#000000',
+                    font: '10px Lucida Sans',
+                },
+                backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor)
+            },
+            series: [{
+                        name: "Current Week",
+                        dataLabels: {
+                                        //enabled: true,
+                                        color: '#c80505',
+                                        formatter: function(){
+                                            return ((this.y).toFixed(2));
+                                        },
+                                        rotation:270,
+                                        x: 4,
+                                        y: 32,
+                                    },
+                        color: '#c80505',
+                        type: "line",
+                        lineWidth: 2,
+                        marker: {
+                          symbol: 'circle',
+                          lineColor: null,
+                          radius: 3,
+                          lineWidth: 1
+                        },
+
+                        data: {{ kwargs.chart18_data|safe }}[0]['data'],
+
+                    },{
+                        name: "Prior Week",
+                        dataLabels: {
+                                        //enabled: true,
+                                        color: "#053246",
+                                        formatter: function(){
+                                            return ((this.y).toFixed(2));
+                                        },
+                                        rotation:270,
+                                        x: 4,
+                                        y:-30,
+                                    },
+                        color: '#053246',
+                        type: "line",
+                        lineWidth: 2,
+                        marker: {
+                          symbol: 'circle',
+                          lineColor: null,
+                          radius: 3,
+                          lineWidth: 1
+                        },
+
+                        data: {{ kwargs.chart18_data|safe }}[1]['data'],
+                    },{
+                        name: "Prior Month",
+                        dataLabels: {
+                                        //enabled: true,
+                                        color: "#0080FF",
+                                        formatter: function(){
+                                            return ((this.y).toFixed(2));
+                                        },
+                                        rotation:270,
+                                        x: 4,
+                                        y:-30,
+                                    },
+                        color: '#0080FF',
+                        type: "line",
+                        lineWidth: 2,
+                        marker: {
+                          symbol: 'circle',
+                          lineColor: null,
+                          radius: 3,
+                          lineWidth: 1
+                        },
+
+                        data: {{ kwargs.chart18_data|safe }}[2]['data'],
+                    }],
+            //series: {{ kwargs.chart18_data|safe }},
+    };
+
+    var chart01 = $('#container01').highcharts(chart01_options);
+    var chart02 = $('#container02').highcharts(chart02_options);
+    var chart03 = $('#container03').highcharts(chart03_options);
+    var chart04 = $('#container04').highcharts(chart04_options);
+    var chart05 = $('#container05').highcharts(chart05_options);
+    var chart06 = $('#container06').highcharts(chart06_options);
+    var chart07 = $('#container07').highcharts(chart07_options);
+    var chart08 = $('#container08').highcharts(chart08_options);
+    var chart09 = $('#container09').highcharts(chart09_options);
+    var chart10 = $('#container10').highcharts(chart10_options);
+    var chart11 = $('#container11').highcharts(chart11_options);
+    var chart12 = $('#container12').highcharts(chart12_options);
+    var chart13 = $('#container13').highcharts(chart13_options);
+    var chart14 = $('#container14').highcharts(chart14_options);
+    var chart15 = $('#container15').highcharts(chart15_options);
+    var chart16 = $('#container16').highcharts(chart16_options);
+    var chart17 = $('#container17').highcharts(chart17_options);
+    var chart18 = $('#container18').highcharts(chart18_options);
+
+});
+</script>
+<script type="text/javascript">
+</script>
+</head>
+<body>
+<div id="top_box" style="position:fixed;
+            background-color:#FFFFFF;
+            z-index:1;
+            margin-top:-16px;
+            width:99%"
+      >
+<div id = "home_nav">
+    <ul id="tabs">
+        <li><a href="/{{kwargs.root_url}}"><img src="{% static kwargs.image_n01_common_blank_png %}" style="float:left;border:0px; margin:0px 0px 0px 0px;"></a></li>
+        <!--<li><a href="{{kwargs.back}}"><font>Back</font></a></li>-->
+        <li class="selected"><a><font>Daily SnapShot</font></a></li>
+    </ul>
+</div>
+  <a href="/{{kwargs.root_url}}"><img src="{% static kwargs.image_n01_common_nest_header_png %}" style="float:left;border:0px;margin:-30px 0px 0px 0px;"></a>
+</div>
+<div id="main_container"style="clear:left;position:relative;">
+    <div id="container01" style="float:left;width:50%; height:500px;margin-top:40px;"></div>
+    <div id="container02" style="float:left;width:49%; height:500px;margin-top:40px;"></div>
+    <div id="container03" style="float:left;width:50%; height:500px;margin-top:40px;"></div>
+    <div id="container04" style="float:left;width:49%; height:500px;margin-top:40px;"></div>
+    <div id="container05" style="float:left;width:50%; height:500px;margin-top:40px;"></div>
+    <div id="container06" style="float:left;width:49%; height:500px;margin-top:40px;"></div>
+    <div id="container07" style="float:left;width:50%; height:500px;margin-top:40px;"></div>
+    <div id="container08" style="float:left;width:49%; height:500px;margin-top:40px;"></div>
+    <div id="container09" style="float:left;width:50%; height:500px;margin-top:40px;"></div>
+    <div id="container10" style="float:left;width:49%; height:500px;margin-top:40px;"></div>
+    <div id="container11" style="float:left;width:50%; height:500px;margin-top:40px;"></div>
+    <div id="container12" style="float:left;width:49%; height:500px;margin-top:40px;"></div>
+    <div id="container17" style="float:left;width:50%; height:500px;margin-top:40px;"></div>
+    <div id="container18" style="float:left;width:49%; height:500px;margin-top:40px;"></div>
+    <div id="container13" style="float:left;width:50%; height:500px;margin-top:40px;"></div>
+    <div id="container14" style="float:left;width:49%; height:500px;margin-top:40px;"></div>
+    <div id="container15" style="float:left;width:50%; height:500px;margin-top:40px;"></div>
+    <div id="container16" style="float:left;width:49%; height:500px;margin-top:40px;"></div>
+
+
+ </div>
+</body>

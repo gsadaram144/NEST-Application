@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <!--[if lt IE 9]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" type="text/css" href="{% static kwargs.css_n01_common_leapfrog_main_css %}" />
+    <script language="javascript" type="text/javascript" src="{% static kwargs.jscript_n01_common_leapfrog_utils_js %}"></script>
+    <title>{{ kwargs.title }}</title>
+    <link rel="shortcut icon" href="{% static kwargs.image_n01_common_favicon_png %}" />
+    <meta charset="utf-8">
+    <!--link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css"-->
+    <!--script src="http://code.jquery.com/jquery-1.9.1.js"></script-->
+    <!--script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script-->
+    <!--script src="http://code.jquery.com/jquery-1.10.1.js"></script-->
+    <!--script src="http://code.highcharts.com/highcharts.js"></script-->
+    <!--script src="http://code.highcharts.com/modules/exporting.js"></script-->
+    <!--script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script-->
+
+    <link rel="stylesheet" href="{% static kwargs.css_n01_common_jquery_ui_themes_1_10_1_themes_smoothness_jquery_ui_css %}">
+    <script src="{% static kwargs.jscript_n01_common_jquery_ui_1_10_1_jquery_1_9_1_js %}"></script>
+    <script src="{% static kwargs.jscript_n01_common_jquery_ui_1_10_1_ui_jquery_ui_js %}"></script>
+    <script src="{% static kwargs.jscript_n01_common_highcharts_highcharts_js %}"></script>
+    <script src="{% static kwargs.jscript_n01_common_highcharts_modules_exporting_js %}"></script>
+
+    <script>
+    $(function() {
+        chart1_options = {
+                chart: {
+                    marginRight: 30,
+                    marginBottom: 110,
+                },
+                title: {
+                    text: '$ Attempts (millions)',
+                    style: {
+                        color: '#002f87',
+                        fontSize: '15px',
+                        fontFamily: 'Lucida Sans'
+                    },
+                    //x:-60
+                },
+                credits: {
+                    enabled:false
+                },
+                xAxis: {
+
+                    categories: {{kwargs.chart1_x|safe}}['data'],
+
+                    title: {
+                        text: 'Attempt Date --->',
+                        style: {
+                            color: '#000000',
+                            fontSize: '12px',
+                            fontFamily: 'Lucida Sans',
+                            fontWeight: "bold"
+                        }
+                    },
+
+                    labels: {
+                        step: 2,
+                        rotation: -90,
+                        align: 'right',
+                        style: {
+                            color: '#000000',
+                            fontSize: '12px',
+                            fontFamily: 'Lucida Sans',
+
+                        }
+                    }
+                },
+
+                tooltip: {
+                        positioner: function () {
+                            return { x:20, y: 0 };
+                        },
+                        backgroundColor: '#FFFFFF',
+                        style: {
+                            fontSize: '10px',
+                            padding: '8px'
+                        },
+                        formatter: function() {
+                        var s = '<b>' + this.series.name + '</b> <br/>'
+                        s += 'Attempt Date: <b>'+ this.x +'</b> <br/>'
+                        s += '$=' + Highcharts.numberFormat((this.y/1000000),2) + 'M | % of total='+ Highcharts.numberFormat(this.percentage,1) + '% </b>'
+
+                        return s;
+                              },
+
+                          },
+                yAxis: { // Primary yAxis
+                    labels: {
+                        enabled:true,
+                        formatter: function(){
+                            return Highcharts.numberFormat(((this.value) / 1000000),0);
+                        },
+                        style: {
+                            color: '#000000',
+                            fontSize: '12px',
+                            fontFamily: 'Lucida Sans'
+                        }
+                    },
+                    title: {
+                        enabled:false,
+                        text: 'TPV --->',
+                        style: {
+                            color: '#000000',
+                            fontSize: '12px',
+                            fontFamily: 'Lucida Sans'
+                        }
+                    },
+                    gridLineColor: '#A0A0A0',
+                    gridLineDashStyle: 'dash',
+                    gridLineWidth: 0.5
+                },
+                legend: {
+                    layout: 'horizontal',
+                    align: 'left',
+                    x: 40,
+                    verticalAlign: 'bottom',
+                    y: 12,
+                    floating: true,
+                    itemStyle: {
+                        font: '9pt',
+                        fontFamily: 'Lucida Sans',
+                        color: '#000000',
+                        fontWeight: "unbold"
+                    },
+                    backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor)
+                },
+                series: [{
+                            name: "Drop-off",
+                            dataLabels: {
+                                            color: "#808080",
+                                            formatter: function(){
+                                                return ((this.y/1000000).toFixed(2));
+                                            },
+                                            rotation:270,
+                                            x: 4,
+                                            y:-60,
+                                        },
+                            color: '#009bde',
+                            type: "line",
+                            stacking: 'normal',
+                            lineWidth: 1,
+                            marker: {
+                                symbol: 'circle',
+                                lineColor: null,
+                                radius: 2,
+                                lineWidth: 1
+                            },
+                            data: {{ kwargs.chart1_data|safe }}[2]['data'],
+
+                        },{
+                            name: "Decline",
+                            dataLabels: {
+                                            color: "#053246",
+                                            formatter: function(){
+                                                return ((this.y/1000000).toFixed(2));
+                                            },
+                                            rotation:270,
+                                            x: 4,
+                                            y:-30,
+                                        },
+                            color: '#ff0000',
+                            type: "line",
+                            stacking: 'normal',
+                            lineWidth: 1,
+                            marker: {
+                                symbol: 'circle',
+                                lineColor: null,
+                                radius: 2,
+                                lineWidth: 1
+                            },
+                            data: {{ kwargs.chart1_data|safe }}[1]['data'],
+
+                        },{
+                            name: "Approved",
+                            dataLabels: {
+                                            color: '#c80505',
+                                            formatter: function(){
+                                                return ((this.y/1000000).toFixed(2));
+                                            },
+                                            rotation:270,
+                                            x: 4,
+                                            y: 32,
+                                        },
+                            color: '#002f87',
+                            type: "line",
+                            stacking: 'normal',
+                            lineWidth: 1,
+                            marker: {
+                                symbol: 'circle',
+                                lineColor: null,
+                                radius: 2,
+                                lineWidth: 1
+                            },
+                            data: {{ kwargs.chart1_data|safe }}[0]['data'],
+
+                        }],
+        };
+        var chart2_options = {
+                chart: {
+                    marginRight: 30,
+                    marginBottom: 110
+                },
+                title: {
+                    text: '# Attempts (units, millions)',
+                    style: {
+                        color: '#002f87',
+                        fontSize: '15px',
+                        fontFamily: 'Lucida Sans'
+                    },
+                },
+                credits: {
+                    enabled:false
+                },
+                xAxis: {
+                    categories: {{kwargs.chart2_x|safe}}['data'],
+                    title: {
+                        text: 'Attempt Date --->',
+                        style: {
+                            color: '#000000',
+                            fontSize: '12px',
+                            fontFamily: 'Lucida Sans',
+                            fontWeight: "bold"
+                        }
+                    },
+
+                    labels: {
+                        step: 2,
+                        rotation: -270,
+                        align: 'bottom',
+                        style: {
+                            color: '#000000',
+                            fontSize: '12px',
+                            fontFamily: 'Lucida Sans'
+                        }
+                    }
+                },
+                  tooltip: {
+                        positioner: function () {
+                            return { x: 20, y: 0 };
+                        },
+                        backgroundColor: '#FFFFFF',
+                        style: {
+                            fontSize: '10px',
+                            padding: '8px'
+                        },
+
+                        formatter: function() {
+                        var s = '<b>' + this.series.name + '</b> <br/>'
+                        s += 'Attempt Date: <b>'+ this.x +'</b> <br/>'
+                        s += '#=' + Highcharts.numberFormat((this.y/1000000),2) + 'M | % of total='+ Highcharts.numberFormat(this.percentage,1) + '% </b>'
+
+                        return s;
+                              },
+
+                            },
+                yAxis: { // Primary yAxis
+                    labels: {
+                        enabled:true,
+                        formatter: function(){
+                            return (Highcharts.numberFormat((this.value/ 1000000),0) );
+                        },
+                        style: {
+                            color: '#000000',
+                            fontSize: '12px',
+                            fontFamily: 'Lucida Sans'
+                        }
+                    },
+                    title: {
+                        enabled:false,
+                        text: 'Units --->',
+                        style: {
+                            color: '#000000',
+                            fontSize: '12px',
+                            fontFamily: 'Lucida Sans'
+                        }
+                    },
+                    gridLineColor: '#A0A0A0',
+                    gridLineDashStyle: 'dash',
+                    gridLineWidth: 0.5
+                },
+                legend: {
+                    layout: 'horizontal',
+                    align: 'left',
+                    x: 30,
+                    verticalAlign: 'bottom',
+                    y: 12,
+                    floating: true,
+                    itemStyle: {
+                        font: '9pt',
+                        fontFamily: 'Lucida Sans',
+                        color: '#000000',
+                        fontWeight: "unbold"
+
+                    },
+                    backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor)
+                },
+
+                series: [{
+                            name: "Drop-off",
+                            color: '#009bde',
+                            type: "line",
+                            stacking: 'normal',
+                            lineWidth: 1,
+                            marker: {
+                                symbol: 'circle',
+                                lineColor: null,
+                                radius: 2,
+                                lineWidth: 1
+                            },
+                            data: {{ kwargs.chart2_data|safe }}[2]['data'],
+                        },{
+                            name: "Decline",
+                            color: '#ff0000',
+                            type: "line",
+                            stacking: 'normal',
+                            lineWidth: 1,
+                            marker: {
+                                symbol: 'circle',
+                                lineColor: null,
+                                radius: 2,
+                                lineWidth: 1
+                            },
+                            data: {{ kwargs.chart2_data|safe }}[1]['data'] ,
+                        },{
+                            name: "Approved",
+                            color: '#002f87',
+                            type: "line",
+                            stacking: 'normal',
+                            lineWidth: 1,
+                            marker: {
+                                symbol: 'circle',
+                                lineColor: null,
+                                radius: 2,
+                                lineWidth: 1
+                            },
+                            data: {{ kwargs.chart2_data|safe }}[0]['data'],
+                        }],
+        };
+
+        var chart3 = $('#container3').highcharts(chart1_options);
+        var chart4 = $('#container4').highcharts(chart2_options);
+    });
+    </script>
+</head>
+<body>
+<div style="min-width:1050px;">
+    <img src="{% static kwargs.image_n01_common_paypal_png %}" style="float:left; margin:0px 0px 8px 20px;">
+    <a href="/{{kwargs.root_url}}"><img src="{% static kwargs.image_n01_common_nest_png %}" style="position:absolute;margin:auto;top:0px;right:0px;left:0px;border:0px;"></a>
+</div><br/>
+<div style="min-width:1050px;">
+<ul id="nav">
+    <li><a>Leapfrog</a>
+    <ul>
+        {% for name,val in kwargs.leapfrog_links_list %}
+        <li>
+            <a href="{{val}}/">{{ name }}</a>
+        </li>
+        {% endfor %}
+    </ul>
+    </li>
+    <li><a>CRM Management</a>
+    <ul>
+        {% for name,link in kwargs.crm_mgmt_list %}
+        <li>
+            <a href="{{ link }}">{{ name }}</a>
+        </li>
+        {% endfor %}
+    </ul>
+    </li>
+    <li><a>Useful Links</a>
+    <ul>
+        {% for name,link in kwargs.useful_links_list %}
+        <li>
+            <a href="{{ link }}">{{ name }}</a>
+        </li>
+        {% endfor %}
+    </ul>
+    </li>
+	<li><a href="project_tracker/tickets/">Project Tracker</a>
+    </li>
+</ul>
+<div style="float:right;margin:-24px 25px 0px 0px;"><a href="/contact_us/" style="color:#F0F0F0;font:15px 'Lucida Sans'">Contact Us</a></div>
+</div>
+{% if kwargs.email %}
+<div style="margin:5px 0px 5px 20px;color:#FF0000;font:15px 'Lucida Sans';">Email has been sent. We will get back to you shortly. Thank you.</div><br/><br/><br/>
+{% endif %}
+<div id="main_container"style="clear:left;position:relative;">
+
+    <div id="container3" style="float:left;width:50%; height:450px;margin-top:70px;"></div>
+    <div id="container4" style="float:left;width:49%; height:450px;margin-top:70px;"></div>
+
+</div>
+
+</body>
+</html>

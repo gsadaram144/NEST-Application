@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <!--[if lt IE 9]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" type="text/css" href="{% static kwargs.css_n01_common_leapfrog_main_css %}" />
+    <script language="javascript" type="text/javascript" src="{% static kwargs.jscript_n01_common_leapfrog_utils_js %}"></script>
+    {% if kwargs.title %}
+    <title>{{ kwargs.title }}</title>
+    {% endif %}
+    <link rel="shortcut icon" href="{% static kwargs.image_n01_common_favicon_png %}" />
+    <link rel="stylesheet" href="{% static kwargs.jscript_n01_common_jquery_ui_css %}">
+    <script language="javascript" type="text/javascript" src="{% static kwargs.jscript_n01_common_jquery_js %}"></script>
+    <script language="javascript" type="text/javascript" src="{% static kwargs.jscript_n01_common_highcharts_js %}"></script>
+    <script language="javascript" type="text/javascript" src="{% static kwargs.jscript_n01_common_highcharts_exporting_js %}"></script>
+    <script language="javascript" type="text/javascript" src="{% static kwargs.jscript_n01_common_jquery_ui_js %}"></script>
+</head>

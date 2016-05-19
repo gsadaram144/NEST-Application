@@ -1,0 +1,229 @@
+<!DOCTYPE html> 
+{% load staticfiles %}
+<html ng-app="projectTracker" lang="en">
+	{% with ''|add:kwargs.root|add:'/image/n01_common/favicon1.png' as favicn %}
+	<link rel="shortcut icon" href="{% static favicn %}" />
+	{% endwith %}
+	<title>Project Tracker | Tickets</title>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+		<meta charset="utf-8">
+		<script src="{% static kwargs.jscript_Project_tracker_angular_js %}"/></script>
+		<script src="{% static kwargs.jscript_Project_tracker_angular_animate_js %}"/></script>
+		<script src="{% static kwargs.jscript_Project_tracker_tickets_js %}"/></script>
+		<script src="{% static kwargs.jscript_Project_tracker_jquery_1_10_2_js %}"/></script>
+		<script src="{% static kwargs.jscript_Project_tracker_jquery_form_validator_min_js %}"/></script>
+		<script src="{% static kwargs.jscript_Project_tracker_jquery_ui_js %}"/></script>
+		<script src="{% static kwargs.jscript_Project_tracker_jquery_ui_1_9_2_js %}"/></script>
+		<script src="{% static kwargs.jscript_Project_tracker_bootstrap_js %}"/></script>
+		<script src="{% static kwargs.jscript_Project_tracker_ui_bootstrap_tpls_0_13_3_js %}"/></script>
+		<meta charset="utf-8">
+		<link rel="stylesheet" type="text/css" href="{% static kwargs.css_n01_common_leapfrog_main_css %}" />
+		<link rel="stylesheet" type="text/css" href="{% static kwargs.css_Project_tracker_jquery_ui_css %}">
+		<link rel="stylesheet" type="text/css" href="{% static kwargs.css_Project_tracker_bootstrap_datetimepicker_min_css %}">
+		<link rel="stylesheet" type="text/css" href="{% static kwargs.css_Project_tracker_bootstrap_min_css %}">
+		<link rel="stylesheet" type="text/css" href="{% static kwargs.css_Project_tracker_bootstrap_theme_min_css %}">
+		<link rel="stylesheet" type="text/css" href="{% static kwargs.css_Project_tracker_style_css %}">
+	</head>
+
+	<body ng-controller="ProjectTrackerController" style="position: relative; width:100%;margin:auto;" >
+	 <div class="container">
+		<div style="margin-top: 4%;">	
+			<div id="top_box" style="position:static;">
+				<div id = "home_nav">
+					<ul id="tabs">
+						<li><a href="/{{kwargs.root_url}}"><img src="{% static kwargs.image_n01_common_blank_png %}" style="float:left;border:0px; margin:0px 0px 0px 0px;"></a></li>
+							{% if kwargs.title == 'tickets' %}
+								<li class="selected"><a><font style="margin-left: 30px;">Tickets</font></a></li>
+								<li><a href="/u_gsadaram/project_tracker/initiatives/"><font>Initiatives</font></a></li>
+								<li><a href="glossary/"><font>Programs</font></a></li>
+							{% elif kwargs.title == 'initiatives' %}
+								<li><a><font>Tickets</font></a></li>	
+							    <li class="selected"><a href="/u_gsadaram/project_tracker/initiatives/"><font>Initiatives</font></a></li>
+							    <li><a href="glossary/"><font>Programs</font></a></li>
+							{% endif %}		
+					</ul>
+				</div>
+				<a href="/{{kwargs.root_url}}"><img src="{% static kwargs.image_n01_common_nest_header_png %}" style="float:left;border:0px;margin:-30px 0px 0px 0px;"></a>
+			</div>	
+			<div style="float:left;margin-top: 2%;">
+			<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal" ng-click="openCreateModal()">Create New Ticket</button>
+			</div>	
+			<div class="search">
+				<span>
+					<input type="text" ng-model="nameFilter" placeholder="Search..." style="float: right; margin-right: 1%;">
+				</span>
+			</div>
+			<div style="margin-right: 6%;float:right;">		
+				<span class="pipe" ng-click="openAll()"><span class="txt">Expand</span></span>
+				<span ng-click="closeAll()"><span class="txt">Collapse</span></span>
+			</div>	
+			{% verbatim %}
+
+			<div class="panel-heading" style="position: relative;background-color: #CFB9B4;margin-left: 5%;margin-right: 5%;margin-top: 6%;">
+				<!--h2 class="panel-title"-->
+					<a role="button" data-toggle="collapse" data-parent="#accordion" ng-click="open(ticket)" aria-expanded="true" aria-controls="collapseOne">
+						<span class="col-sm-1 col-centered" style="text-align:center;border-right: 1px solid #FFFFFF;height: 45px;">Ticket No</span>
+						<span class="col-sm-2 col-centered" style="text-align:center;border-right: 1px solid #FFFFFF;height: 45px;">Assigned To</span>
+						<span class="col-sm-5 col-centered" style="text-align:center;border-right: 1px solid #FFFFFF;height: 45px;">Description</span>
+						<span class="col-sm-2 col-centered" style="text-align:center;border-right: 1px solid #FFFFFF;height: 45px;">Status</span>	
+						<span class="col-sm-1 col-centered" style="text-align:center;border-right: 1px solid #FFFFFF;height: 45px;">Open Days</span>
+						<span class="col-sm-1 col-centered" style="text-align:center;">Delivery Days</span>
+					</a>
+				<!--/h2-->
+			</div>
+			<div class="panel-group body" role="tablist" aria-multiselectable="true" ng-class-odd="'rowo'" ng-class-even="'rowe'" ng-repeat="ticket in tickets | filter: nameFilter as results" style="background-color: #CFB9B4;margin-bottom: 0%;margin-left: 5%;margin-right: 5%;">
+				<div class="panel panel-default">
+					<div class="panel-heading" style="cursor:pointer;">
+					<!--h4 class="panel-title"-->
+						<a role="button" data-toggle="collapse" data-parent="#accordion" ng-click="open(ticket)" aria-expanded="true" aria-controls="collapseOne">
+							<span class="col-sm-1 col-centered" style="text-align:center;border-right: 1px solid #FFFFFF;height: 45px;">{{ticket.TicketNO}}</span>
+							<span class="col-sm-2 col-centered" style="text-align:left;border-right: 1px solid #FFFFFF;height: 45px;">{{ticket.AssignedTo}}</span>
+							<span class="col-sm-5 col-centered" style="text-align:left;border-right: 1px solid #FFFFFF;height: 45px;">{{ticket.Description}}</span>
+							<span class="col-sm-2 col-centered" style="text-align:center;border-right: 1px solid #FFFFFF;height: 45px;">{{ticket.Status}}</span>	
+							<span class="col-sm-1 col-centered" style="text-align:center;border-right: 1px solid #FFFFFF;height: 45px;">{{ticket.noOfOpenDays}}</span>
+							<span class="col-sm-1 col-centered" style="text-align:center;">{{ticket.noOfDelivDays}}</span>
+						</a>
+					<!--/h4-->
+					</div>
+					<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+					<div class="panel-body" ng-class-odd="'rowo'" ng-class-even="'rowe'" ng-show="ticket.display == true">
+						<div style="margin-bottom: 2%;">
+							<span class="col-xs-1 edit" ng-show="!ticket.$edit" href="" ng-click="ticket.$edit = true; editTicket(ticket);"  style="text-decoration: underline;text-align:left;cursor:pointer;font-weight: bolder; font-size: larger;">Edit</span>
+							<span class="col-sm-12" ng-show="ticket.$edit" href="" ng-click="ticket.$edit = false; editTicket(ticket);"></span>
+						</div>
+						<div id="data-toggle" style="height: 280px;">
+						<table class="table table-bordered table-hover" style="float:left;width: 90%;margin: -1px auto;margin-left: 0px">
+							<thead>	
+								<th style="text-align:center;">Status </th>
+								<th style="text-align:center;">Assignee </th>
+								<th style="text-align:center;">Priority </th>
+								<th style="text-align:center;">Requester</th>
+								<th style="text-align:center;">Assigned To </th>
+								<th style="text-align:center;">Targeted Close Date</th>
+								<th style="text-align:center;">Creation Date</th>
+								<th style="text-align:center;">Actual Close Date</th>
+							</thead>	
+							<tbody>
+								<td class="col-sm-1" style="text-align:center;vertical-align:middle;line-height: 2.628571;"><span ng-if="!ticket.$edit">{{ticket.Status}}</span>
+								<span ng-if="ticket.$edit" ><input type="text" replace="[^a-zA-Z(, a-zA-Z)*]" with="" class="form-control" id="ticket.Status" tooltip="Please enter only characters" ng-model="selectedTicket.Status"></span></td>								
+								<td class="col-sm-1" style="text-align:center;vertical-align:middle;line-height: 2.628571;"><span ng-if="!ticket.$edit">{{ticket.Assignee}}</span>
+								<span ng-if="ticket.$edit"><input type="text" replace="[^a-zA-Z(, a-zA-Z)*]" with="" class="form-control" id="ticket.Assignee" tooltip="Please enter only characters" ng-model="selectedTicket.Assignee"></span></td>
+								<td class="col-sm-1" style="text-align:center;vertical-align:middle;line-height: 2.628571;"><span ng-if="!ticket.$edit">{{ticket.Priority}}</span>
+								<span ng-if="ticket.$edit"><input type="text" replace="[^a-zA-Z(, a-zA-Z)*]" with="" class="form-control" id="ticket.Priority" tooltip="Please enter only characters" ng-model="selectedTicket.Priority"></span></td>
+								<td class="col-sm-1" style="text-align:center;vertical-align:middle;line-height: 2.628571;"><span ng-if="!ticket.$edit">{{ticket.Requester}}</span>			
+								<span ng-if="ticket.$edit"><input type="text" replace="[^a-zA-Z(, a-zA-Z)*]" with="" class="form-control" id="ticket.Requester" tooltip="Please enter only characters" ng-model="selectedTicket.Requester"></span></td>
+								<td class="col-sm-1" style="text-align:center;vertical-align:middle;line-height: 2.628571;"><span ng-if="!ticket.$edit">{{ticket.AssignedTo}}</span>
+								<span ng-if="ticket.$edit"><input type="text" replace="[^a-zA-Z(, a-zA-Z)*]" with="" class="form-control" id="ticket.AssignedTo" tooltip="Please enter only characters" ng-model="selectedTicket.AssignedTo"></span></td>
+								<td class="col-sm-1" style="text-align:center;vertical-align:middle;line-height: 2.628571;"><span ng-if="!ticket.$edit">{{ticket.TargetedCloseDate}}</span>
+								<span ng-if="ticket.$edit"><input type="text" class="form-control" jqdatepicker maxlength="10" id="ticket.TargetedCloseDate" ng-model="selectedTicket.TargetedCloseDate"></span></td>
+								<td class="col-sm-1" style="text-align:center;vertical-align:middle;line-height: 2.628571;"><span ng-if="!ticket.$edit">{{ticket.CreationDate}}</span>
+								<span ng-if="ticket.$edit"><input type="text" class="form-control" jqdatepicker maxlength="10" id="ticket.CreationDate" ng-model="selectedTicket.CreationDate"></span></td>
+								<td class="col-sm-1"style="text-align:center;vertical-align:middle;line-height: 2.628571;"><span ng-if="!ticket.$edit">{{ticket.ActualCloseDate}}</span>
+								<span ng-if="ticket.$edit"><input type="text" class="form-control" jqdatepicker maxlength="10" id="ticket.ActualCloseDate" ng-model="selectedTicket.ActualCloseDate"></span></td>
+							</tbody>
+						</table>
+							<div class="row" style="float:left;width: 90%;margin-top: 1%;">
+								<span class="col-sm-6" style="text-align:left;margin-left: 1%;">Description</span>
+								<span class="col-sm-6" style="text-align:center;margin-left: -13%;">Remarks</span>
+								<div class="col-sm-6 table-bordered" style="text-align:left;height:96px;padding: 0px;border-radius: 5px;width: 40%;margin-left: 1%;">
+									<span ng-if="!ticket.$edit">{{ticket.Description}}</span>
+									<span ng-if="ticket.$edit"><textarea rows="4" cols="50" type="text" class="form-control" id="ticket.Description" ng-model="selectedTicket.Description" style="height: 96px;"></textarea></span>
+								</div>
+								<div class="col-sm-6 table-bordered" style="text-align:left;height:96px;padding: 0px;border-radius: 5px;width: 40%;margin-left: 19%;">
+									<span ng-if="!ticket.$edit">{{ticket.Remarks}}</span>
+									<span ng-if="ticket.$edit"><textarea rows="4" cols="50" type="text" class="form-control" id="ticket.Remarks" ng-model="selectedTicket.Remarks" style="height: 96px;"></textarea></span>
+								</div>
+							</div>
+						</div>
+						<span class="pull-left">
+							<a class="btn btn-danger" href="#confirmation" class="btn btn-lg btn-primary" data-toggle="modal">Delete</a>
+						</span>	
+						<span class="pull-right save">
+							<a ng-if="ticket.$edit" class="btn btn-default" ng-click="ticket.$edit = false">Cancel</a>									
+							<a ng-if="ticket.$edit" class="btn btn-primary" ng-click="saveTicket(selectedTicket);ticket.$edit = false" Style="width: 80px;">Save</a>	
+						</span>
+					</div>
+					</div>
+				</div>
+			</div>
+			<div class="animate-repeat" ng-if="results.length == 0" style="margin-left: 6%;">
+				<strong>No results found...</strong>
+			</div>
+			<div class="modal fade" id="myModal" role="dialog">
+				<div class="modal-dialog">
+				
+				<!-- Modal content-->
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal">&times;</button>
+							<h4 class="modal-title">Create New Ticket</h4>
+						</div>
+						<div class="modal-body">
+							<div class="form-group">
+								<label for="" class="required">Ticket No</label>
+								<input type="text" required class="form-control" ng-model="newTicket.TicketNO">
+							</div>
+							<div class="form-group">
+								<label for="">Assignee</label>
+								<input type="text" class="form-control" ng-model="newTicket.Assignee">
+							</div>
+							<div class="form-group">
+								<label for="">Status</label>
+								<input type="text" class="form-control" ng-model="newTicket.Status">
+							</div>
+							<div class="form-group">
+								<label for="">Priority</label>
+								<input type="text" class="form-control" ng-model="newTicket.Priority">
+							</div>
+							<div class="form-group">
+								<label for="">Requester</label>
+								<input type="text" class="form-control" ng-model="newTicket.Requester">
+							</div>
+							<div class="form-group">
+								<label for="">Assigned To</label>
+								<input type="text" class="form-control" ng-model="newTicket.AssignedTo">
+							</div>
+							<div class="form-group">
+								<label for="">Description</label>
+								<textarea rows="2" cols="30" type="text" class="form-control" ng-model="newTicket.Description"></textarea>
+							</div>
+							<div class="form-group">
+								<label for="">Remarks</label>
+								<textarea rows="2" cols="30" type="text" class="form-control" ng-model="newTicket.Remarks"></textarea>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-success" ng-click="createTicket(newTicket)">Create</button>
+							<button type="button" class="btn btn-default" id="closeModal" data-dismiss="modal">Close</button>
+						</div>
+					</div>
+				
+				</div>
+			</div>
+			<div id="confirmation" class="modal fade">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							<h4 class="modal-title">Confirmation.?</h4>
+						</div>
+						<div class="modal-body">
+							<p>Are you sure, You want to completely delete the Ticket?</p>
+							<p class="text-warning"><small>If you delete it selected Ticket info will be lost.</small></p>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							<button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="deleteTicket(ticketDeleteId);">Delete</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+			<!--/div-->
+			<!--/div-->
+			{% endverbatim %}
+		</div>	
+  </body>
+</html>
+ 

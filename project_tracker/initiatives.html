@@ -1,0 +1,289 @@
+<!DOCTYPE html> 
+{% load staticfiles %}
+<html ng-app="projectTracker">
+	{% with ''|add:kwargs.root|add:'/image/n01_common/favicon1.png' as favicn %}
+	<link rel="shortcut icon" href="{% static favicn %}" />
+	{% endwith %}
+	<title>Project Tracker | Initiatives</title>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+		<script src="{% static kwargs.jscript_Project_tracker_angular_js %}"/></script>
+		<script src="{% static kwargs.jscript_Project_tracker_angular_animate_js %}"/></script>
+		<script src="{% static kwargs.jscript_Project_tracker_initiatives_js %}"/></script>
+		<script src="{% static kwargs.jscript_Project_tracker_jquery_1_10_2_js %}"/></script>
+		<script src="{% static kwargs.jscript_Project_tracker_jquery_form_validator_min_js %}"/></script>
+		<script src="{% static kwargs.jscript_Project_tracker_jquery_ui_js %}"/></script>
+		<script src="{% static kwargs.jscript_Project_tracker_jquery_ui_1_9_2_js %}"/></script>
+		<script src="{% static kwargs.jscript_Project_tracker_bootstrap_js %}"/></script>
+		<script src="{% static kwargs.jscript_Project_tracker_ui_bootstrap_tpls_0_13_3_js %}"/></script>
+		<meta charset="utf-8">
+		<link rel="stylesheet" type="text/css" href="{% static kwargs.css_Project_tracker_bootstrap_datetimepicker_min_css %}">
+		<link rel="stylesheet" type="text/css" href="{% static kwargs.css_n01_common_leapfrog_main_css %}" />
+		<link rel="stylesheet" type="text/css" href="{% static kwargs.css_Project_tracker_bootstrap_min_css %}">
+		<link rel="stylesheet" type="text/css" href="{% static kwargs.css_Project_tracker_jquery_ui_css %}">
+		<link rel="stylesheet" type="text/css" href="{% static kwargs.css_Project_tracker_style_css %}">
+	</head>
+	
+	<body ng-controller="ProjectTrackerInitiativesController" style="position: absolute; width:100%;margin:auto;" >
+	<div class="container">
+		<div style="margin-top: 4%;">	
+			<div id="top_box" style="position:static;" >
+				<div id = "home_nav">
+					<ul id="tabs">
+						<li><a href="/{{kwargs.root_url}}"><img src="{% static kwargs.image_n01_common_blank_png %}"></a></li>
+						<li><a href="/u_gsadaram/project_tracker/tickets/"><font style="margin-left: 35px;">Tickets</font></a></li>
+						<li class="selected"><a><font>Initiatives</font></a></li>
+						<li><a href="glossary/"><font>Programs</font></a></li>
+					</ul>
+				</div>
+				<a href="/{{kwargs.root_url}}"><img src="{% static kwargs.image_n01_common_nest_header_png %}" style="float:left;border:0px;margin:-30px 0px 0px 0px;"></a>
+			</div>
+			<div style="float:left;margin-top: 2%;">
+			<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal" ng-click="openCreateInitiative()">Create New Initiative</button>
+			</div>
+			<div class="search">
+				<span>
+					<input type="text" ng-model="nameFilter" placeholder="Search..." style="float: right; margin-right: 1%;">
+				</span>
+			</div>
+			<div style="margin-right: 6%;float:right;">		
+				<span class="pipe" ng-click="openAll()"><span class="txt">Expand</span></span>
+				<span ng-click="closeAll()"><span class="txt">Collapse</span></span>
+			</div>	
+		{% verbatim %}
+			<div class="panel-heading" style="position: relative;background-color: #CFB9B4;margin-left: 5%;margin-right: 8%;margin-top: 6%;">
+				<a role="button" data-toggle="collapse" data-parent="#accordion" ng-click="open(initiative)" aria-expanded="true" aria-controls="collapseOne">
+					<span class="col-sm-4 col-centered" style="text-align:center;border-right: 1px solid #FFFFFF;height: 45px;vertical-align:middle;">NAME</span>
+					<span class="col-sm-2 col-centered" style="text-align:center;border-right: 1px solid #FFFFFF;height: 45px;vertical-align:middle;">Type</span>
+					<span class="col-sm-3 col-centered" style="text-align:center;border-right: 1px solid #FFFFFF;height: 45px;vertical-align:middle;">STATUS</span>
+					<span class="col-sm-3 col-centered" style="text-align:center;vertical-align:middle;">Business Owner</span>
+				</a>
+			</div>
+			<div class="panel-group body" role="tablist" aria-multiselectable="true" ng-class-odd="'rowo'" ng-class-even="'rowe'" ng-repeat="initiative in initiatives | filter: nameFilter as results" style="background-color: #CFB9B4;margin-bottom: 0%;margin-left: 5%;margin-right: 8%;">
+				<div class="panel panel-default">
+					<div class="panel-heading" style="cursor:pointer">
+						<a role="button" data-toggle="collapse" data-parent="#accordion" ng-click="open(initiative)" aria-expanded="true" aria-controls="collapseOne">
+							<span class="col-sm-4 col-centered" style="text-align:center;border-right: 1px solid #FFFFFF;height: 45px;vertical-align:middle;">{{initiative.Name}}</span>
+							<span class="col-sm-2 col-centered" style="text-align:center;border-right: 1px solid #FFFFFF;height: 45px;vertical-align:middle;">{{initiative.Type}}</span>
+							<span class="col-sm-3 col-centered" style="text-align:center;border-right: 1px solid #FFFFFF;height: 45px;vertical-align:middle;">{{initiative.Status}}</span>
+							<span class="col-sm-3 col-centered" style="text-align:center;">{{initiative.BusinessOwner}}</span>
+						</a>
+					</div>
+					<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+						<div class="panel-body" ng-class-odd="'rowo'" ng-class-even="'rowe'" ng-show="initiative.display == true">
+							<div style="margin-bottom: 2%;">
+								<span class="col-xs-1 edit" ng-show="!initiative.$edit" href="" ng-click="initiative.$edit = true; editInitiative(initiative);" data-toggle="modal" data-target="#editMilestone" ng-click="openCreateModal()" style="text-decoration: underline;text-align:left;cursor:pointer;font-weight: bolder; font-size: larger;">Edit</span>
+								<span class="col-sm-11" ng-show="initiative.$edit" href="" ng-click="initiative.$edit = false; editInitiative(initiative);"></span>
+							</div>
+							<div style="float:right;margin-top: -3%;">
+								<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#milestoneModal" ng-click="openCreateModal()">Create New Milestone</button>
+							</div>
+							<div class="dropdown">
+								<table class="table table-bordered table-hover" style="float:left;width: 90%;margin: -1px auto;margin-left: 0px">
+									<thead>	
+										<th style="text-align:center;vertical-align:middle;">Milestone Name </th>
+										<th style="text-align:center;vertical-align:middle;">Milestone Owner </th>
+										<th style="text-align:center;vertical-align:middle;">Targeted Start Date </th>
+										<th style="text-align:center;vertical-align:middle;">Targeted End Date </th>
+										<th style="text-align:center;vertical-align:middle;">Actual End Date</th>
+										<th style="text-align:center;vertical-align:middle;">Remarks</th>
+									</thead>	
+									<tbody ng-repeat="milestone in initiative.milestones" style="margin-top: 1%;">
+							
+										<td class="col-sm-1" style="text-align:center;vertical-align:middle;"><span ng-if="!initiative.$edit">{{milestone.MilestoneName}}</span></td>
+										
+										<td class="col-sm-1" style="text-align:center;vertical-align:middle;"><span ng-if="!initiative.$edit">{{milestone.MilestoneOwner}}</span></td>
+										
+										<td class="col-sm-1" style="text-align:center;vertical-align:middle;"><span ng-if="!initiative.$edit">{{milestone.TargetedStartDate}}</span></td>
+										
+										<td class="col-sm-1" style="text-align:center;vertical-align:middle;"><span ng-if="!initiative.$edit">{{milestone.TargetedEndDate}}</span></td>
+										
+										<td class="col-sm-1" style="text-align:center;vertical-align:middle;"><span ng-if="!initiative.$edit">{{milestone.ActualEndDate}}</span></td>
+										
+										<td class="col-sm-1" style="text-align:center;vertical-align:middle;"><span ng-if="!initiative.$edit">{{milestone.Remarks}}</span></td>
+										
+									</tbody>
+								</table>	
+								<div class="description">
+									<span class="col-sm-6" style="text-align:left;margin-top: 2%;">Description</span>
+									<span class="col-sm-6" style="text-align:left;margin-top: 2%;">Remarks</span>
+									<div class="col-sm-5 table-bordered" style="text-align:left;height:96px;padding: 0px;border-radius: 5px;">
+										<span ng-if="!initiative.$edit">{{initiative.Description}}</span>
+										<span ng-if="initiative.$edit"><textarea rows="4" cols="50" type="text" class="form-control" ng-model="selectedInitiative.Description" style="height: 96px;"></textarea></span>
+									</div>
+									<div class="col-sm-5 table-bordered" style="text-align:left;height:96px;padding: 0px;border-radius: 5px;margin-left: 7%;">
+										<span ng-if="!initiative.$edit">{{initiative.Remarks}}</span>
+										<span ng-if="initiative.$edit"><textarea rows="4" cols="50" type="text" class="form-control" ng-model="selectedInitiative.Remarks" style="height: 96px;"></textarea></span>
+									</div>
+								</div>	
+								<div class="delete">
+									<span class="pull-left">
+										<a class="btn btn-danger"  href="#confirmation" class="btn btn-lg btn-primary" data-toggle="modal">Delete</a>
+									</span>								
+									<span class="pull-right">
+										<a ng-if="initiative.$edit" href="" class="btn btn-default" ng-click="initiative.$edit = false;reset(initiative)">Cancel</a>									
+										<a ng-if="initiative.$edit" href="" class="btn btn-primary" ng-click="saveInitiative(selectedInitiative, initiative.milestones);initiative.$edit = false" Style="width: 80px;">Save</a>	
+									</span>
+								</div>
+							</div>	
+						</div>
+								<div id="editMilestone" class="modal fade">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							<h4 class="modal-title">Edit Milestones in Selected Initiatives </h4>
+						</div>
+						<div class="modal-body">
+							<table class="table table-bordered table-hover" style="float:left;width: 90%;margin: -1px auto;margin-left: 0px">
+									<thead>	
+										<th style="text-align:center;vertical-align:middle;">Milestone Name </th>
+										<th style="text-align:center;vertical-align:middle;">Milestone Owner </th>
+										<th style="text-align:center;vertical-align:middle;">Targeted Start Date </th>
+										<th style="text-align:center;vertical-align:middle;">Targeted End Date </th>
+										<th style="text-align:center;vertical-align:middle;">Actual End Date</th>
+										<th style="text-align:center;vertical-align:middle;">Remarks</th>
+									</thead>	
+									<tbody ng-repeat="milestone in initiative.milestones" style="margin-top: 1%;">
+							
+										<td class="col-sm-1" style="text-align:center;vertical-align:middle;">
+										<span ng-if="initiative.$edit"><input type="text" replace="[^a-zA-Z(, a-zA-Z)*]" with="" class="form-control" tooltip="Please enter only characters" ng-model="milestone.MilestoneName"></span></td>
+										
+										<td class="col-sm-1" style="text-align:center;vertical-align:middle;">
+										<span ng-if="initiative.$edit"><input type="text" class="form-control" ng-model="milestone.MilestoneOwner"></span></td>
+										
+										<td class="col-sm-1" style="text-align:center;vertical-align:middle;">
+										<span ng-if="initiative.$edit"><input type="text" with="" class="form-control" jqdatepicker ng-model="milestone.TargetedStartDate"></span></td>
+										
+										<td class="col-sm-1" style="text-align:center;vertical-align:middle;">			
+										<span ng-if="initiative.$edit"><input type="text"  with="" class="form-control" jqdatepicker ng-model="milestone.TargetedEndDate"></span></td>
+										
+										<td class="col-sm-1" style="text-align:center;vertical-align:middle;">
+										<span ng-if="initiative.$edit"><input type="text" with="" class="form-control" jqdatepicker ng-model="milestone.ActualEndDate"></span></td>
+										
+										<td class="col-sm-1" style="text-align:center;vertical-align:middle;">
+										<span ng-if="initiative.$edit"><input type="text" class="form-control" ng-model="milestone.Remarks"></span></td>
+										
+									</tbody>
+								</table>	
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							<button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="saveInitiative(selectedInitiative, initiative.milestones);">Save</button>
+						</div>
+					</div>
+				</div>
+			</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade" id="myModal" role="dialog">
+				<div class="modal-dialog">
+				
+				<!-- Modal content-->
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal">&times;</button>
+							<h4 class="modal-title">Create New Initiatives</h4>
+						</div>
+						<div class="modal-body">
+							<div class="form-group">
+								<label for="">Initiative Name</label>
+								<input type="text" required class="form-control" ng-model="newInitiative.Name">
+							</div>
+							<div class="form-group">
+								<label for="">Type</label>
+								<input type="text" class="form-control" ng-model="newInitiative.Type">
+							</div>
+							<div class="form-group">
+								<label for="">Status</label>
+								<input type="text" class="form-control" ng-model="newInitiative.Status">
+							</div>
+							<div class="form-group">
+								<label for="">Business Owner</label>
+								<input type="text" class="form-control" ng-model="newInitiative.BusinessOwner">
+							</div>
+							<div class="form-group">
+								<label for="">Description</label>
+								<textarea rows="2" cols="30" type="text" class="form-control" ng-model="newInitiative.Description"></textarea>
+							</div>
+							<div class="form-group">
+								<label for="">Remarks</label>
+								<textarea rows="2" cols="30" type="text" class="form-control" ng-model="newInitiative.Remarks"></textarea>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-success" ng-click="createInitiative(newInitiative)">Create</button>
+							<button type="button" class="btn btn-default" id="closeModal" data-dismiss="modal">Close</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade" id="milestoneModal" role="dialog">
+				<div class="modal-dialog">
+				
+				<!-- Modal content-->
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal">&times;</button>
+							<h4 class="modal-title">Create New Milestones</h4>
+						</div>
+						<div class="modal-body">
+							<div class="form-group">
+								<label for="">Milestone Name</label>
+								<input type="text" required class="form-control" ng-model="newMilestone.Name">
+							</div>
+							<div class="form-group">
+								<label for="">Milestone Owner</label>
+								<input type="text" class="form-control" ng-model="newMilestone.BusinessOwner">
+							</div>
+							<div class="form-group">
+								<label for="">Targeted Start Date</label>
+								<input rows="2" cols="30" type="text" class="form-control" ng-model="newMilestone.TargetedStartDate">
+							</div>
+							<div class="form-group">
+								<label for="">Targeted End Date</label>
+								<input rows="2" cols="30" type="text" class="form-control" ng-model="newMilestone.TargetedEndDate">
+							</div>
+							<div class="form-group">
+								<label for="">Actual End Date</label>
+								<input rows="2" cols="30" type="text" class="form-control" ng-model="newMilestone.ActualEndDate">
+							</div>
+							<div class="form-group">
+								<label for="">Remarks</label>
+								<textarea rows="2" cols="30" type="text" class="form-control" ng-model="newMilestone.Remarks"></textarea>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-success" ng-click="createMilestone(newMilestone)">Create</button>
+							<button type="button" class="btn btn-default" id="closeModal" data-dismiss="modal">Close</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="confirmation" class="modal fade">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							<h4 class="modal-title">Confirmation.?</h4>
+						</div>
+						<div class="modal-body">
+							<p>Are you sure, You want to completely delete the Initiative?</p>
+							<p class="text-warning"><small>If you delete it selected Initiative info will be lost.</small></p>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							<button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="deleteInitiative(selectedInitiativeID);">Delete</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="animate-repeat" ng-if="results.length == 0" style="margin-left: 6%;">
+				<strong>No results found...</strong>
+			</div>
+		</div>
+		{% endverbatim %}
+		</div>
+	</body>	
+</html>	

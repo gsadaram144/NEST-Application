@@ -1,0 +1,137 @@
+/*style.css*/ 
+html *
+{
+	font-family: Lucida Sans;
+	font-size: 13px;	
+	color: black;
+}
+
+@media (max-width: 1200px) {
+	.container {
+		width: 100% !important;
+	}
+}
+
+.col-centered{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+@media (min-width: 1278px) {
+  .col-centered{
+	line-height:3em;
+  }
+}
+
+.tickets1{
+	margin-left: 35px;
+}
+
+.search{
+	margin-bottom:4%;
+	margin-right: 4%;
+	margin-top: 1%;
+}
+
+.pipe:after { content: "|"; padding: 0.5em; }
+
+.txt:hover {
+    text-decoration: underline;
+	cursor: pointer;
+}
+
+.dropdown{
+	height: auto;
+}
+
+.header{
+	font-size: 14px;
+}
+
+.container{
+	max-width: 100%;
+	min-width: 992px;
+	margin-top: -3%;
+}
+
+.nopadding {
+   padding: 0 !important;
+   margin: 0 !important;
+}
+
+.col-xs-1{
+width: 1.333333%;
+}
+
+.save{
+	margin-top: -18px;
+}
+
+.textarea.form-control{
+	height: 96px;
+}
+
+.borderless .thead {
+    border: none;
+}
+
+.glyphicon {
+    font-size: 50px;
+	cursor: pointer;
+}
+
+.btn-group{
+    margin: -37px 70px 0px;
+}
+
+.glyphicon-stack-1x {
+line-height: inherit;
+}
+
+.green{
+  background-color: green;
+}
+    
+.white{
+  color: white;
+}
+
+.green{
+  background-color: green;
+}
+
+.Name{
+	margin: 10px 10px 10px 10px;
+	max-width: 30px;
+}
+.panel-heading{
+    height: 45px;
+}
+
+.panel-group .panel+.panel{
+	margin-top: 0px;
+}
+.panel-group  .panel{
+	border-radius: 0px;
+	border: 0px solid transparent;
+}
+.panel-default>.panel-heading+.panel-collapse .panel-body {
+    border-top-color: #FFFFFF;
+}
+.rowo{
+	background-color: #F5F7E9 ;
+}
+.rowe{
+	background-color: #EBE9F7;
+}
+.rowo>.panel>.panel-heading{
+	background-color: #F5F7E9 ;
+}
+.rowe>.panel>.panel-heading{
+	background-color: #EBE9F7;
+}
+.ui-datepicker {
+    width: 19em;
+}

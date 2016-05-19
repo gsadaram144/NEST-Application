@@ -1,0 +1,42 @@
+{% load staticfiles %}
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <!--[if lt IE 9]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" type="text/css" href="{% static kwargs.css_n01_common_leapfrog_main_css %}" />
+    {% if kwargs.title %}
+    <title>{{ kwargs.title }}</title>
+    {% endif %}
+    <link rel="shortcut icon" href="{% static kwargs.image_n01_common_favicon_png %}" />
+    <script type="text/javascript">
+        function calcHeight()
+        {
+            var the_height=window.innerHeight
+            document.getElementById('the_iframe').height=the_height-80;
+        }
+    </script>
+</head>
+
+<body>
+<div id="top_box" style="position:fixed;
+            background-color:#FFFFFF;
+            z-index:1;
+            margin-top:-16px;
+            width:99%"
+      >
+    <div id = "home_nav">
+        <ul id="tabs">
+            <li><a href="/{{kwargs.root_url}}"><img src="{% static kwargs.image_n01_common_blank_png %}" style="float:left;border:0px; margin:0px 0px 0px 0px;"></a></li>
+            <!--<li><a href="{{kwargs.back}}"><font>Back</font></a></li>-->
+            <li class="selected"><a><font>{{ kwargs.link_name }}</font></a></li>
+        </ul>
+    </div>
+    <a href="/{{kwargs.root_url}}"><img src="{% static kwargs.image_n01_common_nest_header_png %}" style="float:left;border:0px;margin:-30px 0px 0px 0px;"></a>
+</div>
+<br/><br/><br/>
+
+<div style="margin:0px 20px 0px 20px; width:auto;height='80%'">
+    <iframe width="100%" src="{{kwargs.url}}" id="the_iframe" onLoad="calcHeight();" height="1px" frameborder="0" ></iframe>
+</div>
+</body>

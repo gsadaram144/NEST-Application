@@ -1,0 +1,72 @@
+{% load staticfiles %}
+{% include kwargs.html_n01_common_common_html %}
+<html>
+  <head>
+    <title>NEST Survey</title>
+    <style>
+        body{
+            font-family:'Lucida Sans';
+            font-size:12px;
+            }
+    </style>
+  </head>
+  <body>
+    <div id="top_box" style="position:fixed;
+                background-color:#FFFFFF;
+                z-index:1;
+                margin-top:-16px;
+                width:99%">
+        <div id = "home_nav">
+            <ul id="tabs">
+                <li><a href="/{{kwargs.root_url}}"><img src="{% static kwargs.image_n01_common_blank_png %}" style="float:left;border:0px; margin:0px 0px 0px 0px;"></a></li>
+                <li class="selected"><a><font>{{ kwargs.title }}</font></a></li>
+            </ul>
+        </div>
+        <a href="/{{kwargs.root_url}}"><img src="{% static kwargs.image_n01_common_nest_header_png %}" style="float:left;border:0px;margin:-30px 0px 0px 0px;"></a>
+    </div><br/><br/><br/>
+    <form method="post" id="survey_form">
+    {% csrf_token %}
+        <br/>
+        <div style="width:510px; margin-left:auto; margin-right:auto;">
+          <div style="margin-left:15px;">
+          1. How often do you access NEST's Loss Triangle Report?<br>
+          <input type='radio' name='freq' value='Daily' style="margin-left:15px;margin-top:10px;">Daily<br>
+          <input type='radio' name='freq' value='Weekly' style="margin-left:15px;margin-top:3px;">Weekly<br>
+          <input type='radio' name='freq' value='Monthly' style="margin-left:15px;margin-top:3px;">Monthly<br>
+          <input type='radio' name='freq' value='Do Not Access' style="margin-left:15px;margin-top:3px;">Do Not Access<br><br>
+
+          2. What do you use Loss Triangle Report for?<br>
+          <textarea cols=50 rows=5 name='why_nest' style="margin-left:15px;margin-top:10px;"></textarea><br><br><br>
+
+          3. Based on your experience, what are the NEST's Loss Triangle Report gaps?<br>
+          <textarea cols=50 rows=5 name='nest_data_gaps' style="margin-left:15px;margin-top:10px;"></textarea><br><br><br>
+
+          4. Addition of what new report/dashboard to NEST platform will simplify your life?<br>
+          <textarea cols=50 rows=5 name='good_to_have' style="margin-left:15px;margin-top:10px;"></textarea><br><br><br>
+
+          5. How satisfied are you with NEST's Loss Traingle Report?<br>
+          <input type='radio' name='grade' value='Very Satisfied' style="margin-left:15px;margin-top:10px;">Very Satisfied<br>
+          <input type='radio' name='grade' value='Satisfied' style="margin-left:15px;margin-top:3px;">Satisfied<br>
+          <input type='radio' name='grade' value='Neither satisfied nor dis-satisfied' style="margin-left:15px;margin-top:3px;">Neither satisfied nor dis-satisfied<br>
+          <input type='radio' name='grade' value='Dis-satisfied' style="margin-left:15px;margin-top:3px;">Dis-satisfied<br>
+          <input type='radio' name='grade' value='Very Dis-satisfied' style="margin-left:15px;margin-top:3px;">Very Dis-satisfied<br><br>
+          </div>
+          <div style="display: block; height: 1px; border: 0; border-top: 1px solid #ccc; margin: 1em 0; padding: 0;"></div>
+          <div style="clear:left;">
+            <div style= "float:left; margin:25px 0 20px 380px;">
+              <a class='font-12px' style="color:#858585;
+                      padding:13px 0 0 0;" href="javascript:$('#survey_form')[0].reset();">&nbsp;Reset&nbsp;
+              </a>
+            </div>
+            <div style= "float:left; margin:20px 0 20px 8px;">
+              <a style="font:14px 'Lucida Sans';
+                      color:#ffffff;
+                      background-color:#002f87;
+                      padding:6px;" href="javascript:$('#survey_form').submit();">&nbsp;Submit&nbsp;
+              </a>
+            </div>
+          </div><br/><br/><br/><br/>
+        </div>
+    </form>
+  </body>
+</html>

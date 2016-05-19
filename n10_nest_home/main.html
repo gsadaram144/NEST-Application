@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+{% load staticfiles %}
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<!--[if lt IE 9]>
+<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+{% with ''|add:kwargs.root|add:'/css/n01_common/leapfrog_main.css' as main_css %}
+  <link rel="stylesheet" type="text/css" href="{% static main_css %}" />
+{% endwith %}
+{% with ''|add:kwargs.root|add:'/jscript/n01_common/leapfrog_utils.js' as main_js %}
+  <script language="javascript" type="text/javascript" src="{% static main_js %}"></script>
+{% endwith %}
+<title>{{ kwargs.title }}</title>
+{% with ''|add:kwargs.root|add:'/image/n01_common/favicon.png' as favicn %}
+  <link rel="shortcut icon" href="{% static favicn %}" />
+{% endwith %}
+</head>
+<body>
+    <div style="min-width:1050px;">
+        {% with ''|add:kwargs.root|add:'/image/n01_common/paypal.png' as pp_logo %}
+          <img src="{% static pp_logo %}" style="float:left; margin:0px 0px 8px 20px;">
+        {% endwith %}
+        <!--<img src="{% static kwargs.img %}" style="float:left; margin:5px 0px 5px 50px;">-->
+        {% with ''|add:kwargs.root|add:'/image/n01_common/nest.png' as nest_logo %}
+          <a href="/kwargs.root/"><img src="{% static nest_logo %}" style="position:absolute;margin:auto;top:0px;right:0px;left:0px;border:0px;"></a>
+        {% endwith %}
+        <!--<font style="position:absolute;top:40px;right:0;left:570px;margin:auto;">ENgine for Knowledge-based Intelligence</font>
+        <a href="/contact_us/"><img src="{% static 'leapfrog/images/contactus_1.gif' %}" style="float:right; border:0px; margin:17px 19px 20px 0px;"></a>-->
+    </div><br/>
+    <!--<div id="last_access_message">{{kwargs.last_date_actuals}}</div><br />-->
+</body>
+</html>

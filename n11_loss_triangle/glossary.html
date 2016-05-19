@@ -1,0 +1,149 @@
+{% load staticfiles %}
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<link rel="stylesheet" type="text/css" href="{% static kwargs.css_n01_common_leapfrog_main_css %}" />
+<script language="javascript" type="text/javascript" src="{% static kwargs.jscript_n01_common_leapfrog_utils_js %}"></script>
+{% if kwargs.title %}
+<title>{{ kwargs.title }}</title>
+{% endif %}
+<link rel="shortcut icon" href="{% static kwargs.image_n01_common_favicon_png %}" />
+<link rel="stylesheet" type="text/css" href="/static/leapfrog/css/leapfrog_main.css" />
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
+<script src="http://code.jquery.com/jquery-1.10.1.js"></script>
+<script src="http://code.highcharts.com/highcharts.js"></script>
+<script src="http://code.highcharts.com/modules/exporting.js"></script>
+<script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
+
+<style type="text/css">
+h1 { font-size: 15px; margin: 15px 0; }
+table#users-contain { width: 100%; margin: auto;}
+table#users-contain  { margin: auto; border-collapse: collapse; width: 100%;  }
+table#users-contain  td, table#users-contain  th { border: 1px solid #eee; padding: .6em 10px; text-align: left; }
+.ui-widget { font-family: Verdana,Arial,sans-serif/*{ffDefault}*/; font-size: 13px/*{fsDefault}*/; }
+.ui-widget .ui-widget { font-size: 13px; }
+.ui-widget-content { border: 1px solid #aaaaaa/*{borderColorContent}*/; background: #ffffff/*{bgColorContent}*/ url(images/ui-bg_flat_75_ffffff_40x100.png)/*{bgImgUrlContent}*/ 50%/*{bgContentXPos}*/ 50%/*{bgContentYPos}*/ repeat-x/*{bgContentRepeat}*/; color: #222222/*{fcContent}*/; }
+.ui-widget-content a { color: #222222/*{fcContent}*/; }
+.ui-widget-header { border: 1px solid #aaaaaa/*{borderColorHeader}*/; background: #cccccc/*{bgColorHeader}*/ url(images/ui-bg_highlight-soft_75_cccccc_1x100.png)/*{bgImgUrlHeader}*/ 50%/*{bgHeaderXPos}*/ 50%/*{bgHeaderYPos}*/ repeat-x/*{bgHeaderRepeat}*/; color: #222222/*{fcHeader}*/; font-weight: bold; }
+.ui-widget-header a { color: #222222/*{fcHeader}*/; }
+.ui-widget-sub { font-family: Verdana,Arial,sans-serif/*{ffDefault}*/; font-size: 11px/*{fsDefault}*/; }
+.ui-sub-content { border: 0px solid #aaaaaa/*{borderColorContent}*/;border-collapse: collapse;  }
+.ui-sub-content a { color: #222222/*{fcContent}*/; }
+</style>
+
+</head>
+<body>
+<div id="top_box" style="position:fixed;
+            background-color:#FFFFFF;
+            z-index:1;
+            margin-top:-16px;
+            width:99%"
+      >
+  <div id = "home_nav">
+    <ul id="tabs">
+            <li><a href="/{{kwargs.root_url}}"><img src="{% static kwargs.image_n01_common_blank_png %}" style="float:left;border:0px; margin:0px 0px 0px 0px;"></a></li>
+      <!--<li><a href="/"><img src="{% static 'leapfrog/images/blank.png' %}" style="float:left;border:0px; margin:0px 0px 0px 0px;"></a></li>-->
+      <li><a href="../../loss_triangle/"><font>Loss Triangle Report</font></a></li>
+      <li><a href="../../loss_triangle/alternate_view/"><font>Alternate View</font></a></li>
+      <li class="selected"><a><font>Glossary</font></a></li>
+    </ul>
+  </div>
+      <a href="/{{kwargs.root_url}}"><img src="{% static kwargs.image_n01_common_nest_header_png %}" style="float:left;border:0px;margin:-30px 0px 0px 0px;"></a>
+  <!--<a href="/"><img src="{% static 'leapfrog/images/nest_header.png' %}" style="float:left;border:0px;margin:-30px 0px 0px 0px;"></a>-->
+</div><br><br><br>
+
+<table>
+<td style="width:20%;"></td>
+
+<td style="width:65%;" >
+<table id="users-contain" class="ui-widget ui-widget-content"  >
+<thead>
+<tr class="ui-widget-header ">
+<th style="width:26%;">Dimension Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>Vintage</td><td>Loss triangle is refreshed daily, week-ending date for vintages is defined based on the latest UDS data date:<br>EXAMPLE: Latest UDS data date: 21-Jun-2014<br>
+ <table class="ui-widget-sub ui-sub-content users-contain">
+ <tr><th style="width:35%;">Vintage</th><th>Date Range</th></tr>
+ <tr><td>Vintage - 0 </td><td>15-Jun-14  to 21-Jun-14</td></tr>
+ <tr><td>Vintage - 1 </td><td>08-Jun-14  to 14-Jun-14</td></tr>
+ <tr><td>Vintage - 2 </td><td>01-Jun-14  to 07-May-14</td></tr>
+ <tr><td>...so on    </td><td>                       </td></tr>
+</table>
+</td></tr>
+<tr><td>Week since txn/bad_week</td><td>No of weeks from the transaction to the Loss event. Considering transaction week as week1<br>Ex: if loss happen the same week as the transaction then bad_week = 1</td></tr>
+<tr><td>Sender region</td><td>Sender region</td></tr>
+<tr><td>Receiver region</td><td>Receiver region</td></tr>
+<tr><td>Receiver class</td><td>CAT 99 - category 99<br>USPS -  Postage merchants<br>OTH - All other categories</td></tr>
+<tr><td>Is Mobile</td><td>Is Mobile terminal transaction.<br>Yes = True<br>No = False<br>Condition: (wtxn_flag_1 = '20000')</td></tr>
+<tr><td>Is OnEbay</td><td>Is On-eBay transaction.<br>Yes = True<br>No = False<br>Condition: wtxn_subtype  =   'I'</td></tr>
+<tr><td>Is SendMoney</td><td>Is Send money transaction.<br>Yes = True<br>No = False<br>Condition: <br>(wtxn_flag_4 = '20000000') INTERNAL_SEND_MONEY OR<br> (wtxn_flag_4 = '40000000') EXTERNAL_SEND_MONEY</td></tr>
+<tr><td>Is FirstTxn</td><td>Is sender's first payment transaction (Does not apply to wax transactions).<br>Yes = True<br>No = False</td></tr>
+<tr><td>Is XBDR</td><td>Is Cross Border transaction.<br>Yes = True<br>No = False<br>Condition: <br>(UDS.rcvr_primary_residence <> UDS.sndr_primary_residence) AND (UDS.rcvr_primary_residence <> '99')</td></tr>
+
+<tr><td>Is CG</td><td>Is Control group transaction.<br>Yes = CG (Control group)<br>No = NCG (Non Control group)</td></tr>
+<tr><td>Txn class</td><td>VT (excludes WAX, DCC, Member) - Virtual terminal<br>DCC (excludes WAX, VT, Member) - Direct credit card<br>WAX (excludes DCC, VT, Member) - Web Accept Express<br>MEMBER (excludes WAX, DCC, VT)- Consumer has a PayPal Account</td></tr>
+<tr><td>Chosen funding source</td><td>3PC - Third party card<br>iBANK - Instant Bank (iach, uach, elv, uelv, eft, meft)<br>BAL -Balance<br>OTHER - All other funding sources</td></tr>
+<tr><td>CRM segment</td><td>
+  <br>GUEST
+  <br>&nbsp&nbspo WAX (non DCC, non VT)
+  <br>&nbsp&nbspo DCC (might be moved out of Guest in July)
+  <br>&nbsp&nbspo VT (scheduled to be moved out of Guest in July)
+  <br>
+  <br>MEMBER
+  <br>&nbsp&nbspA.  Young
+  <br>&nbsp&nbsp&nbsp&nbspo Segment not in (Guest)
+  <br>&nbsp&nbsp&nbsp&nbspAND
+  <br>&nbsp&nbsp&nbsp&nbsp(
+  <br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspo Account Created Month = Txn month
+  <br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspOR
+  <br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspo Prior month's consumer_type = 1
+  <br>&nbsp&nbsp&nbsp&nbsp)
+  <br>
+  <br>&nbsp&nbspB.  Top
+  <br>&nbsp&nbsp&nbsp&nbspo Segment not in (Guest, Young)
+  <br>&nbsp&nbsp&nbsp&nbspAND
+  <br>&nbsp&nbsp&nbsp&nbspo Prior month's consumer_type = 3
+  <br>
+  <br>&nbsp&nbspC.  Casual
+  <br>&nbsp&nbsp&nbsp&nbspo Segment not in (Guest, Young, Top)
+  <br>
+  <br>&nbsp&nbsp<b><u>Note:</u></b>  consumer_type derived from PP_RISK_OPS_VIEWS.BI_CONSUMER_SEGMENTS
+</td></tr>
+<tr><td>BRM Bad</td>
+<td>
+<table class="ui-widget-sub ui-sub-content users-contain">
+<tr style="height:25px"><th style="width:25%;">BRM_type</th><th>BRM_subtype</th><th>Description</th></tr>
+<tr style="height:25px"><td>ATO     </td><td>1_ATO_CLAIM_OR_AFR</td><td>ATO Claim/AFR (Agent Fraud Reversal)</td></tr>
+<tr style="height:20px"><td>ATO     </td><td>2_ATO_RESTR       </td><td>ATO Restriction</td></tr>
+<tr style="height:20px"><td>CC      </td><td>3_STOLEN_CC_CB    </td><td>Stolen CC Chargeback</td></tr>
+<tr style="height:20px"><td>CC      </td><td>4_UNAUTH_RESTR    </td><td>Unauth Restricted</td></tr>
+<tr style="height:20px"><td>ACH     </td><td>5_ACH_FRAUD       </td><td>ACH Fraud</td></tr>
+<tr style="height:20px"><td>ACH     </td><td>6_ACH_NSF         </td><td>ACH NSF (Not Sufficient Fund)</td></tr>
+<tr style="height:20px"><td>ACH     </td><td>7_ACH_OTH_RET     </td><td>ACH Other Return</td></tr>
+<tr style="height:20px"><td>8_OTH_CB</td><td>8_OTH_CB          </td><td>Other Chargeback</td></tr>
+<tr style="height:20px"><td>No-Tag  </td><td>No-Tag            </td><td>no BRM Tag</td></tr>
+</table>
+</td></tr>
+<tr class="ui-widget-header "><td>Metric Name</td><td>Description (weighting has been applied to CG metrics)</td></tr>
+<tr><td>$TPV</td><td>Total Payment Volume</td></tr>
+<tr><td>NCG: $gLoss Rate (bps)</td><td>Cumulative NCG $ gross loss / NCG TPV<br><U>Sample Use Cases</U><br>1) bad_week = 1, Rate = [bad_week1 NCG gross loss] / NCG TPV<br>2) bad_week = 2  then [(bad_week1, bad_week2) NCG gross loss] / NCG TPV</td></tr>
+<tr><td>CG: $gLoss Rate (bps)</td><td>Cumulative CG $ gross loss / CG TPV<br><U>Sample Use Cases</U><br>1) bad_week = 1, Rate = [bad_week1 CG gross loss] / CG TPV<br>2) bad_week = 2  then [(bad_week1, bad_week2) CG gross loss] / CG TPV</td></tr>
+<tr><td>NCG: $nLoss Rate (bps)</td><td>Cumulative NCG $ net loss / NCG TPV<br><U>Sample Use Cases</U><br>1) bad_week = 1, Rate = [bad_week1 NCG net loss] / NCG TPV<br>2) bad_week = 2  then [(bad_week1, bad_week2) NCG net loss] / NCG TPV</td></tr>
+<tr><td>CG: $nLoss Rate (bps)</td><td>Cumulative CG $ net loss / CG TPV<br><U>Sample Use Cases</U><br>1) bad_week = 1, Rate = [bad_week1 CG net loss] / CG TPV<br>2) bad_week = 2  then [(bad_week1, bad_week2) CG net loss] / CG TPV</td></tr>
+<tr><td># of Txns</td><td>No of transactions</td></tr>
+<tr><td>NCG: Unit gLoss Rate (bps)</td><td>Cumulative NCG unit gross loss / # NCG Txns<br><U>Sample Use Cases</U><br>1) bad_week = 1, Rate = [bad_week1 # NCG gross loss] / # NCG Txns<br>2) bad_week = 2  then [(bad_week1, bad_week2) # NCG gross loss] /  # NCG Txns</td></tr>
+<tr><td>CG: Unit gLoss Rate (bps)</td><td>Cumulative CG unit gross loss /#  CG TPV<br><U>Sample Use Cases</U><br>1) bad_week = 1, Rate = [bad_week1 # CG gross loss] / # CG Txns<br>2) bad_week = 2  then [(bad_week1, bad_week2) # CG gross loss] /  # CG Txns</td></tr>
+
+</tbody>
+</table>
+
+</td>
+<td style="width:20%;"> </td>
+
+<!--</div> -->
+</body>
+</html>

@@ -1,0 +1,28 @@
+{% load staticfiles %}
+
+<div id="blink">
+{% with ''|add:kwargs.root|add:'/image/n01_common/ajax_loader.gif' as spinner %}
+  <img src="{% static spinner %}" id="spinner">
+{% endwith %}
+</div>
+
+<!--Hidden inputs to store user selection-->
+<input type="hidden" id="vintage_dates_hidden" value="{{kwargs.start_date}}~{{kwargs.current_date}}" />
+<input type="hidden" id="Hidden Vintages_hidden" value="" />
+<input type="hidden" id="badweeksdropdown_hidden" value="13" />
+<input type="hidden" id="BRM Bad_hidden" value="All" />
+<input type="hidden" id="Chosen Funding Source_hidden" value="All" />
+<input type="hidden" id="CRM Segment_hidden" value="All" />
+<input type="hidden" id="Is Mobile_hidden" value="All" />
+<input type="hidden" id="Is OnEbay_hidden" value="All" />
+<input type="hidden" id="Is SendMoney_hidden" value="All" />
+<input type="hidden" id="Is FirstTxn_hidden" value="All" />
+<input type="hidden" id="Is XBDR_hidden" value="All" />
+<input type="hidden" id="Receiver Class_hidden" value="All" />
+<input type="hidden" id="Receiver Region_hidden" value="All" />
+<input type="hidden" id="Sender Region_hidden" value="All" />
+<input type="hidden" id="Txn Class_hidden" value="All" />
+<input type="hidden" id="ACH_hidden" value="" />
+<input type="hidden" id="ATO_hidden" value="" />
+<input type="hidden" id="CC_hidden" value="" />
+<input type="hidden" id="onclick_selection" value="" />
